@@ -12,6 +12,10 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.time.format.DateTimeFormatter;
 
 public class ClinicManagerController {
@@ -38,7 +42,7 @@ public class ClinicManagerController {
     private ChoiceBox<?> cb_oldTimeslot;
 
     @FXML
-    private ChoiceBox<?> cb_sProviders;
+    private ChoiceBox<String> cb_sProviders;
 
     @FXML
     private ChoiceBox<?> cb_sServices;
@@ -120,6 +124,28 @@ public class ClinicManagerController {
 
     @FXML
     private TextField tf_sLastName;
+
+    @FXML
+    private void initialize() {
+        loadProviders();
+    }
+
+    private void loadProviders() {
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("providers.txt");
+        if(inputStream == null) {
+            System.out.println("Error: providers.txt file not found.");
+            return;
+        }
+        try(BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+            String line;
+            while((line = reader.readLine()) != null) {
+                cb_sProviders.getItems().add(line);
+            }
+        }
+        catch(IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     @FXML
     void onScheduleButtonClicked(ActionEvent event) {

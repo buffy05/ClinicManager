@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2a01ae0f-e5ff-4fb9-8176-1c621d89020f" name="Changes" comment="10/23: GUI design in progress">
+    <list default="true" id="2a01ae0f-e5ff-4fb9-8176-1c621d89020f" name="Changes" comment="10/24">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/clinic/project3/ClinicManagerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/clinic/project3/ClinicManagerController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/clinic/project3/clinic-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/clinic/project3/clinic-view.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,17 +44,17 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.ClinicManagerMain.executor": "Run",
-    "Application.HelloApplication.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "master",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.ClinicManagerMain.executor&quot;: &quot;Run&quot;,
+    &quot;Application.HelloApplication.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="ClinicManagerMain" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.clinic.project3.ClinicManagerMain" />
@@ -101,12 +100,21 @@
       <option name="project" value="LOCAL" />
       <updated>1729741418194</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="10/24">
+      <option name="closed" value="true" />
+      <created>1729790386613</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1729790386613</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="yuh" />
     <MESSAGE value="10/23: GUI design in progress" />
-    <option name="LAST_COMMIT_MESSAGE" value="10/23: GUI design in progress" />
+    <MESSAGE value="10/24" />
+    <option name="LAST_COMMIT_MESSAGE" value="10/24" />
   </component>
 </project>
