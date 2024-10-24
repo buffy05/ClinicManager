@@ -9,6 +9,6 @@ public class ClinicManagerController {
 
     @FXML
     protected void onHelloButtonClick() {
-        welcomeText.setText("Welcome bitch");
+        welcomeText.setText("Welcome");
     }
 }

@@ -11,6 +11,7 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -209,35 +210,59 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <TextField>
+                        <TextField fx:id="tf_cFirstName" promptText="Enter First Name">
                            <GridPane.margin>
                               <Insets left="15.0" right="15.0" />
                            </GridPane.margin>
                         </TextField>
-                        <TextField GridPane.columnIndex="1">
+                        <TextField fx:id="tf_cLastName" promptText="Enter Last Name" GridPane.columnIndex="1">
                            <GridPane.margin>
                               <Insets left="15.0" right="15.0" />
                            </GridPane.margin>
                         </TextField>
-                        <DatePicker GridPane.columnIndex="2">
+                        <DatePicker fx:id="dp_cDOB" editable="false" promptText="Enter DOB" GridPane.columnIndex="2">
                            <GridPane.margin>
                               <Insets left="15.0" right="15.0" />
                            </GridPane.margin>
                         </DatePicker>
-                        <ChoiceBox prefWidth="150.0" GridPane.rowIndex="1">
+                        <ChoiceBox fx:id="cb_cTimeslot" prefWidth="150.0" GridPane.rowIndex="1">
                            <GridPane.margin>
                               <Insets left="25.0" right="20.0" top="20.0" />
                            </GridPane.margin>
                         </ChoiceBox>
-                        <DatePicker GridPane.columnIndex="2" GridPane.rowIndex="1">
+                        <DatePicker fx:id="dp_cDate" editable="false" promptText="Enter Appointment Date" GridPane.columnIndex="2" GridPane.rowIndex="1">
                            <GridPane.margin>
                               <Insets left="15.0" right="15.0" top="21.0" />
                            </GridPane.margin>
                         </DatePicker>
-                        <Button mnemonicParsing="false" text="Button" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Button fx:id="b_cancel" mnemonicParsing="false" text="Cancel Appointment" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                           <GridPane.margin>
+                              <Insets left="40.0" />
+                           </GridPane.margin>
+                        </Button>
+                        <Label fx:id="labelG" text="Choose Timeslot" GridPane.rowIndex="1">
+                           <GridPane.margin>
+                              <Insets bottom="25.0" left="53.0" />
+                           </GridPane.margin>
+                        </Label>
                      </children>
                   </GridPane>
                </content>
+            </Tab>
+            <Tab text="Appointments">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              </content>
+            </Tab>
+            <Tab text="Provider Credit Amounts">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              </content>
+            </Tab>
+            <Tab text="Patient Billing Statements">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              </content>
             </Tab>
         </tabs>
       </TabPane>
