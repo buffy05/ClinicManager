@@ -1,16 +1,245 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
-
 <?import javafx.scene.control.Button?>
-<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.clinic.project3.ClinicManagerController">
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
-    </padding>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
 
-    <Label fx:id="welcomeText"/>
-    <Button text="Hello!" onAction="#onHelloButtonClick"/>
-</VBox>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.clinic.project3.ClinicManagerController">
+   <bottom>
+      <TextArea fx:id="ta_output" editable="false" prefHeight="104.0" prefWidth="600.0" BorderPane.alignment="CENTER" />
+   </bottom>
+   <center>
+      <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+        <tabs>
+          <Tab fx:id="t_scheduleTab" text="Schedule">
+               <content>
+                  <GridPane>
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <TextField fx:id="tf_sFirstName" promptText="Enter First Name">
+                           <GridPane.margin>
+                              <Insets left="15.0" right="15.0" />
+                           </GridPane.margin>
+                        </TextField>
+                        <TextField fx:id="tf_sLastName" promptText="Enter Last Name" GridPane.columnIndex="1">
+                           <GridPane.margin>
+                              <Insets left="15.0" right="15.0" />
+                           </GridPane.margin>
+                        </TextField>
+                        <DatePicker fx:id="dp_sDOB" editable="false" prefHeight="26.0" prefWidth="298.0" promptText="Enter DOB" GridPane.columnIndex="2">
+                           <GridPane.margin>
+                              <Insets left="15.0" right="15.0" />
+                           </GridPane.margin>
+                        </DatePicker>
+                        <RadioButton fx:id="r_office" contentDisplay="CENTER" mnemonicParsing="false" text="Office" GridPane.rowIndex="1">
+                           <GridPane.margin>
+                              <Insets bottom="35.0" left="60.0" />
+                           </GridPane.margin>
+                           <toggleGroup>
+                              <ToggleGroup fx:id="appType" />
+                           </toggleGroup>
+                        </RadioButton>
+                        <RadioButton fx:id="r_imaging" mnemonicParsing="false" text="Imaging" toggleGroup="$appType" GridPane.rowIndex="1">
+                           <GridPane.margin>
+                              <Insets left="60.0" top="40.0" />
+                           </GridPane.margin>
+                        </RadioButton>
+                        <ChoiceBox fx:id="cb_sProviders" prefHeight="26.0" prefWidth="204.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                           <GridPane.margin>
+                              <Insets top="28.0" />
+                           </GridPane.margin>
+                        </ChoiceBox>
+                        <Label fx:id="labelA" text="Choose Provider for Office Appointment" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <GridPane.margin>
+                              <Insets bottom="38.0" left="10.0" top="25.0" />
+                           </GridPane.margin>
+                           <font>
+                              <Font size="10.0" />
+                           </font>
+                        </Label>
+                        <DatePicker fx:id="dp_sDate" editable="false" promptText="Enter Appointment Date" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                           <GridPane.margin>
+                              <Insets left="15.0" right="15.0" top="10.0" />
+                           </GridPane.margin>
+                        </DatePicker>
+                        <ChoiceBox fx:id="cb_sTimeslot" prefWidth="150.0" GridPane.rowIndex="2">
+                           <GridPane.margin>
+                              <Insets left="25.0" right="20.0" top="20.0" />
+                           </GridPane.margin>
+                        </ChoiceBox>
+                        <Label fx:id="labelC" text="Choose Timeslot" GridPane.rowIndex="2">
+                           <GridPane.margin>
+                              <Insets bottom="45.0" left="62.0" top="20.0" />
+                           </GridPane.margin>
+                           <font>
+                              <Font size="10.0" />
+                           </font>
+                        </Label>
+                        <Button fx:id="b_schedule" mnemonicParsing="false" text="Schedule Appointment" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                           <GridPane.margin>
+                              <Insets left="32.0" />
+                           </GridPane.margin>
+                        </Button>
+                        <Label fx:id="labelB" text="Choose Service for Imaging Appointment" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                           <GridPane.margin>
+                              <Insets bottom="38.0" left="10.0" top="25.0" />
+                           </GridPane.margin>
+                           <font>
+                              <Font size="10.0" />
+                           </font>
+                        </Label>
+                        <ChoiceBox fx:id="cb_sServices" prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                           <GridPane.margin>
+                              <Insets left="15.0" right="15.0" top="28.0" />
+                           </GridPane.margin>
+                        </ChoiceBox>
+                     </children>
+                  </GridPane>
+               </content>
+          </Tab>
+          <Tab fx:id="t_rescheduleTab" text="Reschedule">
+               <content>
+                  <GridPane>
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <TextField fx:id="tf_rFirstName" promptText="Enter First Name">
+                           <GridPane.margin>
+                              <Insets left="15.0" right="15.0" />
+                           </GridPane.margin>
+                        </TextField>
+                        <TextField fx:id="tf_rLastName" promptText="Enter Last Name" GridPane.columnIndex="1">
+                           <GridPane.margin>
+                              <Insets left="15.0" right="15.0" />
+                           </GridPane.margin>
+                        </TextField>
+                        <DatePicker fx:id="dp_rDOB" editable="false" promptText="Enter DOB" GridPane.columnIndex="2">
+                           <GridPane.margin>
+                              <Insets left="15.0" right="15.0" />
+                           </GridPane.margin>
+                        </DatePicker>
+                        <ChoiceBox fx:id="cb_oldTimeslot" prefWidth="150.0" GridPane.rowIndex="1">
+                           <GridPane.margin>
+                              <Insets left="25.0" right="20.0" top="20.0" />
+                           </GridPane.margin>
+                        </ChoiceBox>
+                        <ChoiceBox fx:id="cb_newTimeslot" prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                           <GridPane.margin>
+                              <Insets left="25.0" right="20.0" top="20.0" />
+                           </GridPane.margin>
+                        </ChoiceBox>
+                        <Button fx:id="b_reschedule" mnemonicParsing="false" text="Reschedule Appointment" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                           <GridPane.margin>
+                              <Insets left="28.0" />
+                           </GridPane.margin>
+                        </Button>
+                        <DatePicker fx:id="dp_rDate" editable="false" promptText="Enter Appointment Date" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <GridPane.margin>
+                              <Insets left="15.0" right="15.0" top="21.0" />
+                           </GridPane.margin>
+                        </DatePicker>
+                        <Label fx:id="labelD" text="Choose Old Timeslot" GridPane.rowIndex="1">
+                           <GridPane.margin>
+                              <Insets bottom="25.0" left="45.0" />
+                           </GridPane.margin>
+                        </Label>
+                        <Label fx:id="labelE" text="Choose New Timeslot" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                           <GridPane.margin>
+                              <Insets bottom="25.0" left="42.0" />
+                           </GridPane.margin>
+                        </Label>
+                        <Label fx:id="labelF" text="(Reschedule only available for office appointments)" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                           <GridPane.margin>
+                              <Insets left="5.0" top="50.0" />
+                           </GridPane.margin>
+                           <font>
+                              <Font size="8.5" />
+                           </font>
+                        </Label>
+                     </children>
+                  </GridPane>
+               </content>
+          </Tab>
+            <Tab fx:id="t_cancelTab" text="Cancel">
+               <content>
+                  <GridPane>
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <TextField>
+                           <GridPane.margin>
+                              <Insets left="15.0" right="15.0" />
+                           </GridPane.margin>
+                        </TextField>
+                        <TextField GridPane.columnIndex="1">
+                           <GridPane.margin>
+                              <Insets left="15.0" right="15.0" />
+                           </GridPane.margin>
+                        </TextField>
+                        <DatePicker GridPane.columnIndex="2">
+                           <GridPane.margin>
+                              <Insets left="15.0" right="15.0" />
+                           </GridPane.margin>
+                        </DatePicker>
+                        <ChoiceBox prefWidth="150.0" GridPane.rowIndex="1">
+                           <GridPane.margin>
+                              <Insets left="25.0" right="20.0" top="20.0" />
+                           </GridPane.margin>
+                        </ChoiceBox>
+                        <DatePicker GridPane.columnIndex="2" GridPane.rowIndex="1">
+                           <GridPane.margin>
+                              <Insets left="15.0" right="15.0" top="21.0" />
+                           </GridPane.margin>
+                        </DatePicker>
+                        <Button mnemonicParsing="false" text="Button" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                     </children>
+                  </GridPane>
+               </content>
+            </Tab>
+        </tabs>
+      </TabPane>
+   </center>
+</BorderPane>
