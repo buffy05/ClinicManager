@@ -1,5 +1,8 @@
 package com.clinic.project3;
 
+import util.*;
+import clinic.*;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
