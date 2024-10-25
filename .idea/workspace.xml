@@ -5,27 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2a01ae0f-e5ff-4fb9-8176-1c621d89020f" name="Changes" comment="yuh">
-      <change afterPath="$PROJECT_DIR$/src/main/java/clinic/Appointment.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/clinic/Doctor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/clinic/Imaging.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/clinic/Location.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/clinic/Patient.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/clinic/Person.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/clinic/Profile.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/clinic/ProfileTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/clinic/Provider.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/clinic/Radiology.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/clinic/Specialty.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/clinic/Technician.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/clinic/Timeslot.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/clinic/Visit.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/util/Date.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/util/DateTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/util/List.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/util/ListTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/util/Sort.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/clinic/project3/ClinicManagerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/clinic/project3/ClinicManagerController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -133,13 +113,21 @@
       <option name="project" value="LOCAL" />
       <updated>1729790386613</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="yuh">
+      <option name="closed" value="true" />
+      <created>1729816025967</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1729816025967</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="yuh" />
     <MESSAGE value="10/23: GUI design in progress" />
     <MESSAGE value="10/24" />
-    <option name="LAST_COMMIT_MESSAGE" value="10/24" />
+    <MESSAGE value="yuh" />
+    <option name="LAST_COMMIT_MESSAGE" value="yuh" />
   </component>
 </project>
