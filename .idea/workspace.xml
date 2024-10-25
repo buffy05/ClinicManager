@@ -5,7 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2a01ae0f-e5ff-4fb9-8176-1c621d89020f" name="Changes" comment="10/24">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/clinic/project3/ClinicManagerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/clinic/project3/ClinicManagerController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -55,6 +54,11 @@
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\bhand\IdeaProjects\Project3\src\main\resources" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="ClinicManagerMain" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.clinic.project3.ClinicManagerMain" />
@@ -108,7 +112,15 @@
       <option name="project" value="LOCAL" />
       <updated>1729790386613</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="10/24">
+      <option name="closed" value="true" />
+      <created>1729791420640</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1729791420640</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">

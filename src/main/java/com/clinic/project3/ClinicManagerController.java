@@ -42,7 +42,7 @@ public class ClinicManagerController {
     private ChoiceBox<?> cb_oldTimeslot;
 
     @FXML
-    private ChoiceBox<String> cb_sProviders;
+    private ChoiceBox<String> cb_sProviders; //will edit this to Print Providers only
 
     @FXML
     private ChoiceBox<?> cb_sServices;
