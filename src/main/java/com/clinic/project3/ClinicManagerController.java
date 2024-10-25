@@ -1,5 +1,7 @@
 package com.clinic.project3;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import util.*;
 import clinic.*;
 
@@ -23,6 +25,10 @@ import java.time.format.DateTimeFormatter;
 
 public class ClinicManagerController {
 
+    List<Provider> providerList = new List<Provider>();
+    List<Technician> technicianList = new List<Technician>();
+    ObservableList<String> doctorInfo = FXCollections.observableArrayList();
+
     @FXML
     private ToggleGroup appType;
 
@@ -45,7 +51,7 @@ public class ClinicManagerController {
     private ChoiceBox<?> cb_oldTimeslot;
 
     @FXML
-    private ChoiceBox<String> cb_sProviders;
+    private ChoiceBox<String> cb_sProviders; //will edit this to Print Providers only
 
     @FXML
     private ChoiceBox<?> cb_sServices;
@@ -133,6 +139,18 @@ public class ClinicManagerController {
         loadProviders();
     }
 
+    private int[] parseDate(String dateStr) {
+        try {
+            String[] parts = dateStr.split("/");
+            int month = Integer.parseInt(parts[0]);
+            int day = Integer.parseInt(parts[1]);
+            int year = Integer.parseInt(parts[2]);
+            return new int[] { month, day, year };
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     private void loadProviders() {
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream("providers.txt");
         if(inputStream == null) {
@@ -142,11 +160,53 @@ public class ClinicManagerController {
         try(BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
             String line;
             while((line = reader.readLine()) != null) {
-                cb_sProviders.getItems().add(line);
+                String[] tokens = line.split("\\s+");
+
+                //process provider
+                if(tokens[0].equalsIgnoreCase("D")) {
+                    int[] dobParts = parseDate(tokens[3]);
+                    if(dobParts == null) {
+                        continue;
+                    }
+                    String first = tokens[1];
+                    String last = tokens[2];
+                    Date dob = new Date(dobParts[0], dobParts[1], dobParts[2]);
+                    Location location = Location.valueOf(tokens[4].toUpperCase());
+                    Specialty specialty = Specialty.valueOf(tokens[5].toUpperCase());
+                    String npi = tokens[6];
+                    Doctor doctor = new Doctor(new Profile(first, last, dob), location, specialty, npi);
+                    providerList.add(doctor);
+                    doctorInfo.add(first + " " + last + " " + npi);
+                } else if(tokens[0].equalsIgnoreCase("T")) {
+                    int[] dobParts = parseDate(tokens[3]);
+                    if(dobParts == null) {
+                        continue;
+                    }
+                    String first = tokens[1];
+                    String last = tokens[2];
+                    Date dob = new Date(dobParts[0], dobParts[1], dobParts[2]);
+                    Location location = Location.valueOf(tokens[4].toUpperCase());
+                    int ratePerVisit = Integer.parseInt(tokens[5]);
+                    Technician technician = new Technician(new Profile(first, last, dob), location, ratePerVisit);
+                    providerList.add(technician);
+                    technicianList.add(technician);
+
+                }
+                cb_sProviders.setItems(doctorInfo);
             }
         }
         catch(IOException e) {
             e.printStackTrace();
+        }
+        //temporary print statement, might set output to text area
+        printProviders();
+    }
+
+    //just for testing, will remove
+    private void printProviders() {
+        System.out.println("Printing Providers");
+        for(Provider provider : providerList) {
+            System.out.println(provider);
         }
     }
 
