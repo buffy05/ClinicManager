@@ -8,14 +8,16 @@
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.clinic.project3.ClinicManagerController">
@@ -249,21 +251,73 @@
                </content>
             </Tab>
             <Tab text="Appointments">
-              <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-              </content>
+               <content>
+                  <GridPane>
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="507.2" minWidth="10.0" prefWidth="507.2" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <TableView fx:id="tv_appointmentsTable" prefHeight="266.0" prefWidth="690.0">
+                          <columns>
+                            <TableColumn fx:id="c_appointmentsCol" prefWidth="506.40001220703124" text="Appointments" />
+                          </columns>
+                        </TableView>
+                     </children>
+                  </GridPane>
+               </content>
             </Tab>
             <Tab text="Provider Credit Amounts">
-              <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-              </content>
+               <content>
+                  <BorderPane prefHeight="200.0" prefWidth="200.0">
+                     <center>
+                        <TextArea fx:id="ta_PC" editable="false" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+                     </center>
+                     <top>
+                        <Button mnemonicParsing="false" onAction="#onPCButtonClicked" prefHeight="26.0" prefWidth="723.0" text="Display Expected Provider Credit Amounts" BorderPane.alignment="CENTER" />
+                     </top>
+                  </BorderPane>
+               </content>
             </Tab>
             <Tab text="Patient Billing Statements">
-              <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-              </content>
+               <content>
+                  <BorderPane prefHeight="200.0" prefWidth="200.0">
+                     <center>
+                        <TextArea fx:id="ta_PS" editable="false" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+                     </center>
+                     <top>
+                        <Button mnemonicParsing="false" onAction="#onPSButtonClicked" prefHeight="26.0" prefWidth="788.0" text="Display Billing Statements For All Patients" BorderPane.alignment="CENTER" />
+                     </top>
+                  </BorderPane>
+               </content>
             </Tab>
         </tabs>
       </TabPane>
    </center>
+   <right>
+      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="b_pa" mnemonicParsing="false" onAction="#onDateTimeProviderButton" prefHeight="48.0" prefWidth="100.0" text="date/time/provider">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Button>
+            <Button fx:id="b_pl" mnemonicParsing="false" onAction="#onCountyDateTimeButton" prefHeight="37.0" prefWidth="100.0" text="county/date/time">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Button>
+            <Button fx:id="b_pp" mnemonicParsing="false" onAction="#onPatientDateTimeButton" prefHeight="46.0" prefWidth="99.0" text="patient/date/time">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Button>
+            <Button fx:id="b_po" mnemonicParsing="false" onAction="#onOfficeOnlyButton" prefHeight="56.0" prefWidth="106.0" text="office only" />
+            <Button fx:id="b_pi" mnemonicParsing="false" onAction="#onImagingOnlyButton" prefHeight="55.0" prefWidth="129.0" text="imaging only" />
+            <Button fx:id="b_refresh" mnemonicParsing="false" onAction="#refreshButton" prefHeight="62.0" prefWidth="106.0" text="Refresh" />
+         </children>
+      </VBox>
+   </right>
 </BorderPane>
