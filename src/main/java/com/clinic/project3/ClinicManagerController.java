@@ -341,12 +341,12 @@ public class ClinicManagerController {
         return null;
     }
 
-    private int superContains(Appointment appointment, String[] tokens) {
+    private int superContains(Appointment appointment, String appDateString, String timeSlotString, String firstName, String lastName, String dobString) {
         for(Appointment a : appointmentList) {
             if(appointment.equals(a) && appointment.getPatient().getProfile().equals(a.getPatient().getProfile())) {
                 //System.out.println(a.toString());
                 appointmentList.remove(a);
-                System.out.println(tokens[1] + " " + tokens[2] + " " + tokens[3] + " " + tokens[4] + " " + tokens[5] + " - appointment has been canceled.");
+                System.out.println(appDateString + " " + timeSlotString + " " + firstName + " " + lastName + " " + dobString + " - appointment has been canceled.");
                 Provider provider = providedProvider(a);
                 if(provider == null) return 0;
                 provider.subtractCharges(provider.rate());
@@ -622,7 +622,7 @@ public class ClinicManagerController {
             ta_output.appendText("Please select a new timeslot from the list.\n");
             return;
         }
-        String[] newTimeSlotString = oldTimeslotFullString.split(" ");
+        String[] newTimeSlotString = newTimeslotFullString.split(" ");
         handleReschedule(firstName, lastName, dobString, oldTimeSlotString[0], newTimeSlotString[0], appDateString);
         printAppointmentList();
         clearBoxesAfterSchedulingSuccesfull();
@@ -631,7 +631,42 @@ public class ClinicManagerController {
 
     @FXML
     void onCancelButtonClicked(ActionEvent event) {
-        //
+        String firstName = tf_cFirstName.getText().trim();
+        if(firstName.trim().isEmpty()) {
+            ta_output.appendText("Please enter first name\n");
+            return;
+        }
+
+        String lastName = tf_cLastName.getText().trim();
+        if(lastName.trim().isEmpty()) {
+            ta_output.appendText("Please enter last name\n");
+            return;
+        }
+
+        if(dp_cDOB.getValue() == null) {
+            ta_output.appendText("Please choose a DOB\n");
+            return;
+        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M/d/yyyy");
+        String dobString = dp_cDOB.getValue().format(formatter);
+
+        if(dp_cDate.getValue() == null) {
+            ta_output.appendText("Please choose an appointment date\n");
+            return;
+        }
+        String appDateString = dp_cDate.getValue().format(formatter);
+
+        String timeslotFullString = cb_cTimeslot.getValue();
+        if(timeslotFullString == null) {
+            ta_output.appendText("Please select a timeslot from the list.\n");
+            return;
+        }
+        String[] timeSlotString = timeslotFullString.split(" ");
+
+        handleCancel(firstName, lastName, dobString, appDateString, timeSlotString[0]);
+        printAppointmentList();
+        clearBoxesAfterSchedulingSuccesfull();
+        return;
     }
 
     private void clearBoxesAfterSchedulingSuccesfull() {
@@ -801,5 +836,18 @@ public class ClinicManagerController {
         appointmentList.remove(tempAppointment);
         appointmentList.add(newAppointment);
         System.out.println("Rescheduled to " + newAppointment.toString());
+    }
+
+    private void handleCancel(String firstName, String lastName, String dobString, String appDateString, String timeSlotString) {
+//        if(tokens.length != 6) {
+//            System.out.println("Missing data tokens.");
+//            return;
+//        }
+        Appointment appointment = processLine(firstName, lastName, dobString, appDateString, timeSlotString);
+
+        if(appointment == null) return;
+        if(superContains(appointment, appDateString, timeSlotString, firstName, lastName, dobString) == 0) {
+            System.out.println(appDateString + " " + timeSlotString + " " + firstName + " " + lastName + " " + dobString + " - appointment does not exist.");
+        }
     }
 }
