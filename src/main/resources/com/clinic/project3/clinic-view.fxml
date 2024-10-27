@@ -163,7 +163,7 @@
                               <Insets left="25.0" right="20.0" top="20.0" />
                            </GridPane.margin>
                         </ChoiceBox>
-                        <Button fx:id="b_reschedule" mnemonicParsing="false" text="Reschedule Appointment" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                        <Button fx:id="b_reschedule" mnemonicParsing="false" onAction="#onRescheduleButtonClicked" text="Reschedule Appointment" GridPane.columnIndex="1" GridPane.rowIndex="2">
                            <GridPane.margin>
                               <Insets left="28.0" />
                            </GridPane.margin>
@@ -234,7 +234,7 @@
                               <Insets left="15.0" right="15.0" top="21.0" />
                            </GridPane.margin>
                         </DatePicker>
-                        <Button fx:id="b_cancel" mnemonicParsing="false" text="Cancel Appointment" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                        <Button fx:id="b_cancel" mnemonicParsing="false" onAction="#onCancelButtonClicked" text="Cancel Appointment" GridPane.columnIndex="1" GridPane.rowIndex="2">
                            <GridPane.margin>
                               <Insets left="40.0" />
                            </GridPane.margin>

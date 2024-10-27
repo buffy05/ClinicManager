@@ -585,39 +585,39 @@ public class ClinicManagerController {
 
     @FXML
     void onRescheduleButtonClicked(ActionEvent event) {
-        String firstName = tf_sFirstName.getText().trim();
+        String firstName = tf_rFirstName.getText().trim();
         if(firstName.trim().isEmpty()) {
             ta_output.appendText("Please enter first name\n");
             return;
         }
 
-        String lastName = tf_sLastName.getText().trim();
+        String lastName = tf_rLastName.getText().trim();
         if(lastName.trim().isEmpty()) {
             ta_output.appendText("Please enter last name\n");
             return;
         }
 
-        if(dp_sDOB.getValue() == null) {
+        if(dp_rDOB.getValue() == null) {
             ta_output.appendText("Please choose a DOB\n");
             return;
         }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M/d/yyyy");
-        String dobString = dp_sDOB.getValue().format(formatter);
+        String dobString = dp_rDOB.getValue().format(formatter);
 
-        if(dp_sDate.getValue() == null) {
+        if(dp_rDate.getValue() == null) {
             ta_output.appendText("Please choose an appointment date\n");
             return;
         }
-        String appDateString = dp_sDate.getValue().format(formatter);
+        String appDateString = dp_rDate.getValue().format(formatter);
 
-        String oldTimeslotFullString = cb_sTimeslot.getValue();
+        String oldTimeslotFullString = cb_oldTimeslot.getValue();
         if(oldTimeslotFullString == null) {
             ta_output.appendText("Please select your old timeslot from the list.\n");
             return;
         }
         String[] oldTimeSlotString = oldTimeslotFullString.split(" ");
 
-        String newTimeslotFullString = cb_sTimeslot.getValue();
+        String newTimeslotFullString = cb_newTimeslot.getValue();
         if(newTimeslotFullString == null) {
             ta_output.appendText("Please select a new timeslot from the list.\n");
             return;
@@ -629,22 +629,38 @@ public class ClinicManagerController {
         return;
     }
 
+    @FXML
+    void onCancelButtonClicked(ActionEvent event) {
+        //
+    }
+
     private void clearBoxesAfterSchedulingSuccesfull() {
         // Register the information (your registration logic goes here)
 
         // Clear all text fields
         tf_sFirstName.clear();
-        // Clear other text fields similarly if you have more
+        tf_rFirstName.clear();
+        tf_cFirstName.clear();
         tf_sLastName.clear();
+        tf_rLastName.clear();
+        tf_cLastName.clear();
 
         // Reset ChoiceBoxes
         cb_sProviders.getSelectionModel().clearSelection();
         cb_sServices.getSelectionModel().clearSelection();
         cb_sTimeslot.getSelectionModel().clearSelection();
+        cb_newTimeslot.getSelectionModel().clearSelection();
+        cb_oldTimeslot.getSelectionModel().clearSelection();
+        cb_cTimeslot.getSelectionModel().clearSelection();
+
 
         // Clear DatePicker
         dp_sDOB.setValue(null);
         dp_sDate.setValue(null);
+        dp_rDOB.setValue(null);
+        dp_rDate.setValue(null);
+        dp_cDOB.setValue(null);
+        dp_cDate.setValue(null);
 
         // Clear ToggleGroup selection (RadioButtons)
         appType.selectToggle(null);
