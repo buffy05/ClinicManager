@@ -1,21 +1,14 @@
 package com.clinic.project3;
 
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.*;
 import util.*;
 import clinic.*;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -38,6 +31,27 @@ public class ClinicManagerController {
     private ObservableList<String> doctorInfo = FXCollections.observableArrayList();
     private ObservableList<String> timeslotInfo = FXCollections.observableArrayList();
     private ObservableList<String> serviceInfo = FXCollections.observableArrayList();
+
+    @FXML
+    private Button b_pa;
+
+    @FXML
+    private Button b_pi;
+
+    @FXML
+    private Button b_pl;
+
+    @FXML
+    private Button b_po;
+
+    @FXML
+    private Button b_pp;
+
+    @FXML
+    private TableColumn<Appointment, String> c_appointmentsCol;
+
+    @FXML
+    private TableView<Appointment> tv_appointmentsTable;
 
     @FXML
     private ToggleGroup appType;
@@ -127,6 +141,13 @@ public class ClinicManagerController {
     private TextArea ta_output;
 
     @FXML
+    private TextArea ta_PC;
+
+    @FXML
+    private TextArea ta_PS;
+
+
+    @FXML
     private TextField tf_cFirstName;
 
     @FXML
@@ -153,6 +174,9 @@ public class ClinicManagerController {
         serviceInfo.add("ULTRASOUND");
         serviceInfo.add("CATSCAN");
         cb_sServices.setItems(serviceInfo);
+
+        c_appointmentsCol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().toString()));
+        tv_appointmentsTable.setItems(FXCollections.observableArrayList());
     }
 
     private int[] parseDate(String dateStr) {
@@ -581,6 +605,81 @@ public class ClinicManagerController {
             clearBoxesAfterSchedulingSuccesfull();
             return;
         }
+    }
+
+    private ObservableList<Appointment> convertToObservableList() {
+        ObservableList<Appointment> observableList = FXCollections.observableArrayList();
+        for(Appointment appointment : appointmentList) {
+            observableList.add(appointment);
+        }
+        return observableList;
+    }
+
+    @FXML
+    void onDateTimeProviderButton() {
+        if(appointmentList.isEmpty()) {
+            ta_output.appendText("\nCannot display appointment list because there are no appointments.\n");
+            return;
+        }
+        //sort appointment list by date/time/provider
+        tv_appointmentsTable.setItems(convertToObservableList());
+    }
+
+    @FXML
+    void onCountyDateTimeButton() {
+        if(appointmentList.isEmpty()) {
+            ta_output.appendText("\nCannot display appointment list because there are no appointments.\n");
+            return;
+        }
+    }
+
+    @FXML
+    void onPatientDateTimeButton() {
+        if(appointmentList.isEmpty()) {
+            ta_output.appendText("\nCannot display appointment list because there are no appointments.\n");
+            return;
+        }
+    }
+
+    @FXML
+    void onOfficeOnlyButton() {
+        if(appointmentList.isEmpty()) {
+            ta_output.appendText("\nCannot display appointment list because there are no appointments.\n");
+            return;
+        }
+    }
+
+    @FXML
+    void onImagingOnlyButton() {
+        if(appointmentList.isEmpty()) {
+            ta_output.appendText("\nCannot display appointment list because there are no appointments.\n");
+            return;
+        }
+    }
+
+    @FXML
+    void onPCButtonClicked() {
+        if(appointmentList.isEmpty()) {
+            ta_output.appendText("\nCannot display appointment list because there are no appointments.\n");
+            return;
+        }
+    }
+
+    @FXML
+    void onPSButtonClicked() {
+        if(appointmentList.isEmpty()) {
+            ta_output.appendText("\nCannot display appointment list because there are no appointments.\n");
+            return;
+        }
+    }
+
+
+
+
+    @FXML
+    void refreshButton() {
+        //clear table
+        tv_appointmentsTable.setItems(FXCollections.observableArrayList());
     }
 
     @FXML
