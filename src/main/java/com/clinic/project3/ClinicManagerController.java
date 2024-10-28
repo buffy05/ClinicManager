@@ -659,17 +659,33 @@ public class ClinicManagerController {
 
     @FXML
     void onPCButtonClicked() {
-        if(appointmentList.isEmpty()) {
-            ta_output.appendText("\nCannot display appointment list because there are no appointments.\n");
+        if(appointmentList.isEmpty() || providerList.isEmpty() || scheduleEmpty) {
+            ta_output.appendText("\nSchedule calendar is empty.\n");
             return;
         }
+        ta_PC.appendText("\n** Credit amount ordered by provider. **\n");
+        int i = 1;
+        for(Provider provider : providerList) {
+            ta_PC.appendText("\n("+i+") " + provider.getProfile() + " [credit amount: $" + provider.getTotalCharges() + ".00]\n");
+            i++;
+        }
+        ta_PC.appendText("\n** end of list **\n");
     }
 
     @FXML
     void onPSButtonClicked() {
-        if(appointmentList.isEmpty()) {
-            ta_output.appendText("\nCannot display appointment list because there are no appointments.\n");
+        if(appointmentList.isEmpty() || providerList.isEmpty() || patientList.isEmpty() || scheduleEmpty) {
+            ta_output.appendText("\nSchedule calendar is empty.\n");
             return;
+        }
+
+        Sort.sortPatients(patientList);
+        ta_PS.appendText("\n** Billing statement ordered by patient. **");
+        int i = 1;
+        for(Patient patient : patientList) {
+            int totalCharges = getTotalCharges(patient);
+            ta_PS.appendText("\n("+i+") " + patient.getProfile() + " [due: $" + totalCharges + ".00]\n");
+            i++;
         }
     }
 
