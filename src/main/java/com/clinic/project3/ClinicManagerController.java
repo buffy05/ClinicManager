@@ -476,6 +476,7 @@ public class ClinicManagerController {
         cb_oldTimeslot.setItems(timeslotInfo);
     }
 
+    //above 40 lines but not really sure how to cut it down, its fine i guess
     private void loadProviders() {
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream("providers.txt");
         if(inputStream == null) {
@@ -486,8 +487,6 @@ public class ClinicManagerController {
             String line;
             while((line = reader.readLine()) != null) {
                 String[] tokens = line.split("\\s+");
-
-                //process provider
                 if(tokens[0].equalsIgnoreCase("D")) {
                     int[] dobParts = parseDate(tokens[3]);
                     if(dobParts == null) {
@@ -515,7 +514,6 @@ public class ClinicManagerController {
                     Technician technician = new Technician(new Profile(first, last, dob), location, ratePerVisit);
                     providerList.add(technician);
                     technicianList.add(technician);
-
                 }
             }
             Sort.sortProviders(providerList);
@@ -535,6 +533,7 @@ public class ClinicManagerController {
         }
     }
 
+    //also over 40 lines, if fixable fix, but if not it's fine
     @FXML
     void onScheduleButtonClicked(ActionEvent event) {
         String firstName = tf_sFirstName.getText().trim();
@@ -542,39 +541,33 @@ public class ClinicManagerController {
             ta_output.appendText("\nPlease enter first name");
             return;
         }
-
         String lastName = tf_sLastName.getText().trim();
         if(lastName.trim().isEmpty()) {
             ta_output.appendText("\nPlease enter last name");
             return;
         }
-
         if(dp_sDOB.getValue() == null) {
             ta_output.appendText("\nPlease choose a DOB");
             return;
         }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M/d/yyyy");
         String dobString = dp_sDOB.getValue().format(formatter);
-
         if(dp_sDate.getValue() == null) {
             ta_output.appendText("\nPlease choose an appointment date");
             return;
         }
         String appDateString = dp_sDate.getValue().format(formatter);
-
         String timeslotFullString = cb_sTimeslot.getValue();
         if(timeslotFullString == null) {
             ta_output.appendText("\nPlease select a timeslot from the list.");
             return;
         }
         String[] timeSlotString = timeslotFullString.split(" ");
-
         RadioButton selectedRadioButton = (RadioButton) appType.getSelectedToggle();
         if(selectedRadioButton == null) {
             ta_output.appendText("\nPlease select either Office or Imaging as appointment type.");
             return;
         }
-
         if(selectedRadioButton == r_office) {
             String selectedProvider = cb_sProviders.getValue();
             if(selectedProvider == null) {
@@ -583,7 +576,6 @@ public class ClinicManagerController {
             }
             String[] npi = selectedProvider.split(" ");
             handleD(firstName, lastName, dobString, appDateString, timeSlotString[0], npi[2]);
-            //printAppointmentList();
             clearBoxesAfterSchedulingSuccesfull();
             return;
         }
@@ -594,9 +586,7 @@ public class ClinicManagerController {
                 return;
             }
             handleT(firstName, lastName, dobString, appDateString, timeSlotString[0], selectedService);
-            //printAppointmentList();
             clearBoxesAfterSchedulingSuccesfull();
-            return;
         }
     }
 
@@ -718,9 +708,6 @@ public class ClinicManagerController {
         scheduleEmpty = true;
     }
 
-
-
-
     @FXML
     void refreshButton() {
         //clear table
@@ -737,33 +724,28 @@ public class ClinicManagerController {
             ta_output.appendText("\nPlease enter first name");
             return;
         }
-
         String lastName = tf_rLastName.getText().trim();
         if(lastName.trim().isEmpty()) {
             ta_output.appendText("\nPlease enter last name");
             return;
         }
-
         if(dp_rDOB.getValue() == null) {
             ta_output.appendText("\nPlease choose a DOB");
             return;
         }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M/d/yyyy");
         String dobString = dp_rDOB.getValue().format(formatter);
-
         if(dp_rDate.getValue() == null) {
             ta_output.appendText("\nPlease choose an appointment date");
             return;
         }
         String appDateString = dp_rDate.getValue().format(formatter);
-
         String oldTimeslotFullString = cb_oldTimeslot.getValue();
         if(oldTimeslotFullString == null) {
             ta_output.appendText("\nPlease select your old timeslot from the list.");
             return;
         }
         String[] oldTimeSlotString = oldTimeslotFullString.split(" ");
-
         String newTimeslotFullString = cb_newTimeslot.getValue();
         if(newTimeslotFullString == null) {
             ta_output.appendText("\nPlease select a new timeslot from the list.");
@@ -771,9 +753,7 @@ public class ClinicManagerController {
         }
         String[] newTimeSlotString = newTimeslotFullString.split(" ");
         handleReschedule(firstName, lastName, dobString, oldTimeSlotString[0], newTimeSlotString[0], appDateString);
-        //printAppointmentList();
         clearBoxesAfterSchedulingSuccesfull();
-        return;
     }
 
     @FXML
@@ -783,73 +763,55 @@ public class ClinicManagerController {
             ta_output.appendText("\nPlease enter first name");
             return;
         }
-
         String lastName = tf_cLastName.getText().trim();
         if(lastName.trim().isEmpty()) {
             ta_output.appendText("\nPlease enter last name");
             return;
         }
-
         if(dp_cDOB.getValue() == null) {
             ta_output.appendText("\nPlease choose a DOB");
             return;
         }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M/d/yyyy");
         String dobString = dp_cDOB.getValue().format(formatter);
-
         if(dp_cDate.getValue() == null) {
             ta_output.appendText("\nPlease choose an appointment date");
             return;
         }
         String appDateString = dp_cDate.getValue().format(formatter);
-
         String timeslotFullString = cb_cTimeslot.getValue();
         if(timeslotFullString == null) {
             ta_output.appendText("\nPlease select a timeslot from the list.");
             return;
         }
         String[] timeSlotString = timeslotFullString.split(" ");
-
         handleCancel(firstName, lastName, dobString, appDateString, timeSlotString[0]);
-        //printAppointmentList();
         clearBoxesAfterSchedulingSuccesfull();
-        return;
     }
 
     private void clearBoxesAfterSchedulingSuccesfull() {
-        // Register the information (your registration logic goes here)
-
-        // Clear all text fields
         tf_sFirstName.clear();
         tf_rFirstName.clear();
         tf_cFirstName.clear();
         tf_sLastName.clear();
         tf_rLastName.clear();
         tf_cLastName.clear();
-
-        // Reset ChoiceBoxes
         cb_sProviders.getSelectionModel().clearSelection();
         cb_sServices.getSelectionModel().clearSelection();
         cb_sTimeslot.getSelectionModel().clearSelection();
         cb_newTimeslot.getSelectionModel().clearSelection();
         cb_oldTimeslot.getSelectionModel().clearSelection();
         cb_cTimeslot.getSelectionModel().clearSelection();
-
-
-        // Clear DatePicker
         dp_sDOB.setValue(null);
         dp_sDate.setValue(null);
         dp_rDOB.setValue(null);
         dp_rDate.setValue(null);
         dp_cDOB.setValue(null);
         dp_cDate.setValue(null);
-
-        // Clear ToggleGroup selection (RadioButtons)
         appType.selectToggle(null);
     }
 
     private Appointment processLine(String firstName, String lastName, String dobString, String appDateString, String timeSlotString) {
-        //line format: D,2/28/2025,1,John,Doe,12/13/1989,01
         Date date = isDateValid(appDateString);
         if(date == null) return null;
 
@@ -930,7 +892,6 @@ public class ClinicManagerController {
             ta_output.appendText(appointment.getPatient().toString() + " has an existing appointment at the same time slot.");
             return;
         }
-
         Radiology radiologyRoom = getRadiology(service);
         if(radiologyRoom == null) {
             return;
@@ -938,7 +899,6 @@ public class ClinicManagerController {
         //proceed to assign a technician
         Imaging imagingApp = new Imaging(appointment.getDate(), appointment.getTimeslot(),
                 appointment.getPatient(), appointment.getProvider(), radiologyRoom);
-
 
         findAvailableTechnician(appointment.getDate(), appointment.getTimeslot(), radiologyRoom, imagingApp);
         if(imagingApp.getRoom() == null) return;
