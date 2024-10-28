@@ -179,6 +179,7 @@ public class ClinicManagerController {
         tv_appointmentsTable.setItems(FXCollections.observableArrayList());
     }
 
+
     private int[] parseDate(String dateStr) {
         try {
             String[] parts = dateStr.split("/");
@@ -280,7 +281,7 @@ public class ClinicManagerController {
 
     private void printAppointmentList() {
         for(Appointment appointment : appointmentList) {
-            System.out.println(appointment);
+            ta_output.appendText(appointment.toString());
         }
     }
 
@@ -290,19 +291,19 @@ public class ClinicManagerController {
         Date date = new Date(Integer.parseInt(mmddyyyy[0].trim()), Integer.parseInt(mmddyyyy[1].trim()), Integer.parseInt(mmddyyyy[2].trim()));
         //check if date is valid:
         if(!date.isValid()) {
-            System.out.println("Appointment Date: " + date.toString() + " is not a valid calendar date.");
+            ta_output.appendText("\nAppointment Date: " + date.toString() + " is not a valid calendar date.");
             return null;
         }
         if(date.isToday() || date.isBeforeToday()) {//
-            System.out.println("Appointment Date: " + date.toString() + " is today or a date before today.");
+            ta_output.appendText("\nAppointment Date: " + date.toString() + " is today or a date before today.");
             return null;
         }
         if(date.isWeekend()) {
-            System.out.println("Appointment Date: " + date.toString() + " is Saturday or Sunday.");
+            ta_output.appendText("\nAppointment Date: " + date.toString() + " is Saturday or Sunday.");
             return null;
         }
         if(!date.isIn6Months()) {
-            System.out.println("Appointment Date: " + date.toString() + " is not within six months.");
+            ta_output.appendText("\nAppointment Date: " + date.toString() + " is not within six months.");
             return null;
         }
         return date;
@@ -312,13 +313,12 @@ public class ClinicManagerController {
         //extract dob
         String[] mmddyyyyDOB = dobString.split("/");
         Date dateDOB = new Date(Integer.parseInt(mmddyyyyDOB[0].trim()), Integer.parseInt(mmddyyyyDOB[1].trim()), Integer.parseInt(mmddyyyyDOB[2].trim()));
-        //System.out.println(dateDOB.toString());
         if(!dateDOB.isValid()) {
-            System.out.println("Patient dob: " + dateDOB.toString() + " is not a valid calendar date.");
+            ta_output.appendText("\nPatient dob: " + dateDOB.toString() + " is not a valid calendar date.");
             return null;
         }
         if(dateDOB.isToday() || !dateDOB.isBeforeToday()) {//fix this
-            System.out.println("Patient dob: " + dateDOB.toString() + " is today or a date after today.");
+            ta_output.appendText("\nPatient dob: " + dateDOB.toString() + " is today or a date after today.");
             return null;
         }
         return dateDOB;
@@ -328,7 +328,8 @@ public class ClinicManagerController {
         int startingIndex = NEXTTECHINDEX;
         boolean foundAvailable = false;
         if(appointmentList.contains(imagingAppointment)) {
-            System.out.println(imagingAppointment.getPatient().toString() + " has an existing appointment at the same time slot#1.");
+            ta_output.appendText("\n");
+            ta_output.appendText(imagingAppointment.getPatient().toString() + " has an existing appointment at the same time slot.");
             imagingAppointment.setRoom(null);
             return;
         }
@@ -368,9 +369,9 @@ public class ClinicManagerController {
     private int superContains(Appointment appointment, String appDateString, String timeSlotString, String firstName, String lastName, String dobString) {
         for(Appointment a : appointmentList) {
             if(appointment.equals(a) && appointment.getPatient().getProfile().equals(a.getPatient().getProfile())) {
-                //System.out.println(a.toString());
                 appointmentList.remove(a);
-                System.out.println(appDateString + " " + timeSlotString + " " + firstName + " " + lastName + " " + dobString + " - appointment has been canceled.");
+                ta_output.appendText("\n");
+                ta_output.appendText(appDateString + " " + timeSlotString + " " + firstName + " " + lastName + " " + dobString + " - appointment has been canceled.");
                 Provider provider = providedProvider(a);
                 if(provider == null) return 0;
                 provider.subtractCharges(provider.rate());
@@ -478,7 +479,7 @@ public class ClinicManagerController {
     private void loadProviders() {
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream("providers.txt");
         if(inputStream == null) {
-            System.out.println("Error: providers.txt file not found.");
+            ta_output.appendText("\nError: providers.txt file not found.");
             return;
         }
         try(BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
@@ -538,128 +539,154 @@ public class ClinicManagerController {
     void onScheduleButtonClicked(ActionEvent event) {
         String firstName = tf_sFirstName.getText().trim();
         if(firstName.trim().isEmpty()) {
-            ta_output.appendText("Please enter first name\n");
+            ta_output.appendText("\nPlease enter first name");
             return;
         }
-        //System.out.println("First Name: " + firstName);
 
         String lastName = tf_sLastName.getText().trim();
         if(lastName.trim().isEmpty()) {
-            ta_output.appendText("Please enter last name\n");
+            ta_output.appendText("\nPlease enter last name");
             return;
         }
-        //System.out.println("Last Name: " + lastName);
 
         if(dp_sDOB.getValue() == null) {
-            ta_output.appendText("Please choose a DOB\n");
+            ta_output.appendText("\nPlease choose a DOB");
             return;
         }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M/d/yyyy");
         String dobString = dp_sDOB.getValue().format(formatter);
-        //System.out.println("Selected date of birth: " + dobString);
 
         if(dp_sDate.getValue() == null) {
-            ta_output.appendText("Please choose an appointment date\n");
+            ta_output.appendText("\nPlease choose an appointment date");
             return;
         }
         String appDateString = dp_sDate.getValue().format(formatter);
-        //System.out.println("Appointment date: " + appDateString);
 
         String timeslotFullString = cb_sTimeslot.getValue();
         if(timeslotFullString == null) {
-            ta_output.appendText("Please select a timeslot from the list.\n");
+            ta_output.appendText("\nPlease select a timeslot from the list.");
             return;
         }
         String[] timeSlotString = timeslotFullString.split(" ");
-        //System.out.println("Selected timeslot num: " + timeSlotString[0]);
-
 
         RadioButton selectedRadioButton = (RadioButton) appType.getSelectedToggle();
         if(selectedRadioButton == null) {
-            ta_output.appendText("Please select either Office or Imaging as appointment type.\n");
+            ta_output.appendText("\nPlease select either Office or Imaging as appointment type.");
             return;
         }
-        //System.out.println("Selected option: " + selectedRadioButton.getText());
+
         if(selectedRadioButton == r_office) {
             String selectedProvider = cb_sProviders.getValue();
             if(selectedProvider == null) {
-                ta_output.appendText("Please select a provider from the list.\n");
+                ta_output.appendText("\nPlease select a provider from the list.");
                 return;
             }
             String[] npi = selectedProvider.split(" ");
-            //System.out.println("Npi: " + npi[2]);
             handleD(firstName, lastName, dobString, appDateString, timeSlotString[0], npi[2]);
-            printAppointmentList();
+            //printAppointmentList();
             clearBoxesAfterSchedulingSuccesfull();
             return;
         }
         if(selectedRadioButton == r_imaging) {
             String selectedService = cb_sServices.getValue();
             if(selectedService == null) {
-                ta_output.appendText("Please select a service from the list.\n");
+                ta_output.appendText("\nPlease select a service from the list.");
                 return;
             }
-            //System.out.println("Selected service: " + selectedService);
             handleT(firstName, lastName, dobString, appDateString, timeSlotString[0], selectedService);
-            printAppointmentList();
+            //printAppointmentList();
             clearBoxesAfterSchedulingSuccesfull();
             return;
         }
     }
 
-    private ObservableList<Appointment> convertToObservableList() {
+    private ObservableList<Appointment> convertToObservableList(String key) {
         ObservableList<Appointment> observableList = FXCollections.observableArrayList();
-        for(Appointment appointment : appointmentList) {
-            observableList.add(appointment);
+        switch(key) {
+            case "all":
+                for(Appointment appointment : appointmentList) {
+                    observableList.add(appointment);
+                }
+                break;
+            case "office":
+                for(Appointment appointment: appointmentList) {
+                    if(appointment instanceof Imaging) continue;
+                    else observableList.add(appointment);
+                }
+                break;
+            case "imaging":
+                for(Appointment appointment: appointmentList) {
+                    if(appointment instanceof Imaging) observableList.add(appointment);
+                }
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid sort key");
         }
         return observableList;
     }
 
     @FXML
     void onDateTimeProviderButton() {
-        if(appointmentList.isEmpty()) {
+        if(appointmentList.isEmpty() || providerList.isEmpty() || scheduleEmpty) {
+            tv_appointmentsTable.setItems(FXCollections.observableArrayList());
             ta_output.appendText("\nCannot display appointment list because there are no appointments.\n");
             return;
         }
         //sort appointment list by date/time/provider
-        tv_appointmentsTable.setItems(convertToObservableList());
+        Sort.sortAppointments(appointmentList, providerList, "PA");
+        tv_appointmentsTable.setItems(convertToObservableList("all"));
     }
 
     @FXML
     void onCountyDateTimeButton() {
-        if(appointmentList.isEmpty()) {
+        if(appointmentList.isEmpty() || providerList.isEmpty() || scheduleEmpty) {
+            tv_appointmentsTable.setItems(FXCollections.observableArrayList());
             ta_output.appendText("\nCannot display appointment list because there are no appointments.\n");
             return;
         }
+        Sort.sortAppointments(appointmentList, providerList, "PL");
+        tv_appointmentsTable.setItems(convertToObservableList("all"));
     }
 
     @FXML
     void onPatientDateTimeButton() {
-        if(appointmentList.isEmpty()) {
+        if(appointmentList.isEmpty() || providerList.isEmpty() || scheduleEmpty) {
+            tv_appointmentsTable.setItems(FXCollections.observableArrayList());
             ta_output.appendText("\nCannot display appointment list because there are no appointments.\n");
             return;
         }
+        Sort.sortAppointments(appointmentList, providerList, "PP");
+        tv_appointmentsTable.setItems(convertToObservableList("all"));
     }
 
     @FXML
     void onOfficeOnlyButton() {
-        if(appointmentList.isEmpty()) {
+        if(appointmentList.isEmpty() || providerList.isEmpty() || scheduleEmpty) {
+            tv_appointmentsTable.setItems(FXCollections.observableArrayList());
             ta_output.appendText("\nCannot display appointment list because there are no appointments.\n");
             return;
         }
+        Sort.sortAppointments(appointmentList, providerList, "PL");
+        tv_appointmentsTable.setItems(convertToObservableList("office"));
+
     }
 
     @FXML
     void onImagingOnlyButton() {
-        if(appointmentList.isEmpty()) {
+        if(appointmentList.isEmpty() || providerList.isEmpty() || scheduleEmpty) {
+            tv_appointmentsTable.setItems(FXCollections.observableArrayList());
             ta_output.appendText("\nCannot display appointment list because there are no appointments.\n");
             return;
         }
+        Sort.sortAppointments(appointmentList, providerList, "PL");
+        tv_appointmentsTable.setItems(convertToObservableList("imaging"));
     }
 
     @FXML
     void onPCButtonClicked() {
-        if(appointmentList.isEmpty() || providerList.isEmpty() || scheduleEmpty) {
+        ta_PC.clear();
+        if(appointmentList.isEmpty() || providerList.isEmpty()) {
+            //tv_appointmentsTable.setItems(FXCollections.observableArrayList());
             ta_output.appendText("\nSchedule calendar is empty.\n");
             return;
         }
@@ -674,7 +701,8 @@ public class ClinicManagerController {
 
     @FXML
     void onPSButtonClicked() {
-        if(appointmentList.isEmpty() || providerList.isEmpty() || patientList.isEmpty() || scheduleEmpty) {
+        ta_PS.clear();
+        if(appointmentList.isEmpty() || providerList.isEmpty() || patientList.isEmpty()) {
             ta_output.appendText("\nSchedule calendar is empty.\n");
             return;
         }
@@ -687,6 +715,7 @@ public class ClinicManagerController {
             ta_PS.appendText("\n("+i+") " + patient.getProfile() + " [due: $" + totalCharges + ".00]\n");
             i++;
         }
+        scheduleEmpty = true;
     }
 
 
@@ -696,50 +725,53 @@ public class ClinicManagerController {
     void refreshButton() {
         //clear table
         tv_appointmentsTable.setItems(FXCollections.observableArrayList());
+        //clear pc text area and ps text area
+        ta_PC.clear();
+        ta_PS.clear();
     }
 
     @FXML
     void onRescheduleButtonClicked(ActionEvent event) {
         String firstName = tf_rFirstName.getText().trim();
         if(firstName.trim().isEmpty()) {
-            ta_output.appendText("Please enter first name\n");
+            ta_output.appendText("\nPlease enter first name");
             return;
         }
 
         String lastName = tf_rLastName.getText().trim();
         if(lastName.trim().isEmpty()) {
-            ta_output.appendText("Please enter last name\n");
+            ta_output.appendText("\nPlease enter last name");
             return;
         }
 
         if(dp_rDOB.getValue() == null) {
-            ta_output.appendText("Please choose a DOB\n");
+            ta_output.appendText("\nPlease choose a DOB");
             return;
         }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M/d/yyyy");
         String dobString = dp_rDOB.getValue().format(formatter);
 
         if(dp_rDate.getValue() == null) {
-            ta_output.appendText("Please choose an appointment date\n");
+            ta_output.appendText("\nPlease choose an appointment date");
             return;
         }
         String appDateString = dp_rDate.getValue().format(formatter);
 
         String oldTimeslotFullString = cb_oldTimeslot.getValue();
         if(oldTimeslotFullString == null) {
-            ta_output.appendText("Please select your old timeslot from the list.\n");
+            ta_output.appendText("\nPlease select your old timeslot from the list.");
             return;
         }
         String[] oldTimeSlotString = oldTimeslotFullString.split(" ");
 
         String newTimeslotFullString = cb_newTimeslot.getValue();
         if(newTimeslotFullString == null) {
-            ta_output.appendText("Please select a new timeslot from the list.\n");
+            ta_output.appendText("\nPlease select a new timeslot from the list.");
             return;
         }
         String[] newTimeSlotString = newTimeslotFullString.split(" ");
         handleReschedule(firstName, lastName, dobString, oldTimeSlotString[0], newTimeSlotString[0], appDateString);
-        printAppointmentList();
+        //printAppointmentList();
         clearBoxesAfterSchedulingSuccesfull();
         return;
     }
@@ -748,38 +780,38 @@ public class ClinicManagerController {
     void onCancelButtonClicked(ActionEvent event) {
         String firstName = tf_cFirstName.getText().trim();
         if(firstName.trim().isEmpty()) {
-            ta_output.appendText("Please enter first name\n");
+            ta_output.appendText("\nPlease enter first name");
             return;
         }
 
         String lastName = tf_cLastName.getText().trim();
         if(lastName.trim().isEmpty()) {
-            ta_output.appendText("Please enter last name\n");
+            ta_output.appendText("\nPlease enter last name");
             return;
         }
 
         if(dp_cDOB.getValue() == null) {
-            ta_output.appendText("Please choose a DOB\n");
+            ta_output.appendText("\nPlease choose a DOB");
             return;
         }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M/d/yyyy");
         String dobString = dp_cDOB.getValue().format(formatter);
 
         if(dp_cDate.getValue() == null) {
-            ta_output.appendText("Please choose an appointment date\n");
+            ta_output.appendText("\nPlease choose an appointment date");
             return;
         }
         String appDateString = dp_cDate.getValue().format(formatter);
 
         String timeslotFullString = cb_cTimeslot.getValue();
         if(timeslotFullString == null) {
-            ta_output.appendText("Please select a timeslot from the list.\n");
+            ta_output.appendText("\nPlease select a timeslot from the list.");
             return;
         }
         String[] timeSlotString = timeslotFullString.split(" ");
 
         handleCancel(firstName, lastName, dobString, appDateString, timeSlotString[0]);
-        printAppointmentList();
+        //printAppointmentList();
         clearBoxesAfterSchedulingSuccesfull();
         return;
     }
@@ -824,7 +856,6 @@ public class ClinicManagerController {
         int timeSlotNum = Integer.parseInt(timeSlotString);
         Timeslot timeslot = checkTimeslot(timeSlotNum);
         if(timeslot == null) {
-            //System.out.println(tokens[2] + " is not a valid time slot.");
             return null;
         }
 
@@ -837,16 +868,11 @@ public class ClinicManagerController {
     }
 
     private void handleD(String firstName, String lastName, String dobString, String appDateString, String timeSlotString, String npi) {
-//        if(tokens.length != 7) {
-//            System.out.println("Missing data tokens.");
-//            return;
-//        }
         Appointment appointment = processLine(firstName, lastName, dobString, appDateString, timeSlotString);
         if(appointment == null) return;
         //String npi = tokens[6];
         Doctor doctor = (Doctor) searchDoctor(npi);
         if(doctor == null) {
-            System.out.println(npi + " - provider doesn't exist.");
             return;
         }
         appointment.setProvider(doctor);
@@ -854,41 +880,59 @@ public class ClinicManagerController {
         Visit newVist = new Visit(appointment);
         if(appointmentList.isEmpty()) {
             appointmentList.add(appointment);
-            System.out.println(appointment.toString() + " booked.");
+            ta_output.appendText("\n");
+            ta_output.appendText(appointment.toString() + " booked.");
             doctor.addCharges(doctor.rate());
             patient.addVisit(newVist);
             scheduleEmpty = false;
             return;
         }
-        if(isProviderAvailable(appointment) && !appointmentList.contains(appointment)) {
+        if(isProviderAvailable(appointment) && !fortifiedContains(appointment)) {
             appointmentList.add(appointment);
-            System.out.println(appointment.toString() + " booked.");
+            ta_output.appendText("\n");
+            ta_output.appendText(appointment.toString() + " booked.");
             doctor.addCharges(doctor.rate());
             patient.addVisit(newVist);
             scheduleEmpty = false;
         }
         else {
-            if(appointmentList.contains(appointment)) {
-                System.out.println(appointment.getPatient().toString() + " has an existing appointment at the same time slot.");
+            if(fortifiedContains(appointment)) {
+                ta_output.appendText("\n");
+                ta_output.appendText(appointment.getPatient().toString() + " has an existing appointment at the same time slot.");
                 return;
             }
             if(!isProviderAvailable(appointment)) {
-                System.out.println(appointment.getProvider().toString() + " is not available at slot " + timeSlotString);
+                ta_output.appendText("\n");
+                ta_output.appendText(appointment.getProvider().toString() + " is not available at slot " + timeSlotString);
             }
         }
     }
 
+    private boolean fortifiedContains(Appointment appointment) {
+        if(appointmentList.contains(appointment)) return true;
+        else {
+            for(Appointment a : appointmentList) {
+                if(appointment.getPatient().getProfile().equals(a.getPatient().getProfile()) &&
+                    appointment.getTimeslot().equals(a.getTimeslot()) &&
+                        appointment.getDate().equals(a.getDate())) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+
     private void handleT(String firstName, String lastName, String dobString, String appDateString, String timeSlotString, String service) {
-//        if (tokens.length != 7) {
-//            System.out.println("Missing data tokens.");
-//            return;
-//        }
         Appointment appointment = processLine(firstName, lastName, dobString, appDateString, timeSlotString);
         if(appointment == null) return;
+        if(fortifiedContains(appointment)) {
+            ta_output.appendText("\n");
+            ta_output.appendText(appointment.getPatient().toString() + " has an existing appointment at the same time slot.");
+            return;
+        }
 
         Radiology radiologyRoom = getRadiology(service);
         if(radiologyRoom == null) {
-            System.out.println(service + " - imaging service not provided.");
             return;
         }
         //proceed to assign a technician
@@ -899,14 +943,16 @@ public class ClinicManagerController {
         findAvailableTechnician(appointment.getDate(), appointment.getTimeslot(), radiologyRoom, imagingApp);
         if(imagingApp.getRoom() == null) return;
         if(imagingApp.getProvider() == null) {
-            System.out.println("Cannot find an available technician at all locations for " + radiologyRoom + " at slot " + timeSlotString);
+            ta_output.appendText("\n");
+            ta_output.appendText("Cannot find an available technician at all locations for " + radiologyRoom + " at slot " + timeSlotString);
             return;
         }
         Visit newVisit = new Visit(imagingApp);
         Patient patient = findOrCreatePatient(imagingApp.getPatient().getProfile());
         Technician technician = (Technician) searchTechnician(imagingApp.getProvider().getProfile());
         appointmentList.add(imagingApp);
-        System.out.println(imagingApp.toString() + " booked.");
+        ta_output.appendText("\n");
+        ta_output.appendText(imagingApp.toString() + " booked.");
         //money stuff
         assert technician != null;
         technician.addCharges(technician.rate());
@@ -916,21 +962,17 @@ public class ClinicManagerController {
 
     private void handleReschedule(String firstName, String lastName, String dobString, String oldTimeslotString, String newTimeslotString, String appDateString) {
         //only for office appointments, imaging appointments can't be rescheduled
-//        if(tokens.length != 7) {
-//            System.out.println("Missing data tokens.");
-//            return;
-//        }
         Appointment tempAppointment = processLine(firstName, lastName, dobString, appDateString, oldTimeslotString);
         if(tempAppointment == null) return;
         if(!appointmentList.contains(tempAppointment)) {
-            System.out.println(tempAppointment.getDate().toString() +
+            ta_output.appendText("\n");
+            ta_output.appendText(tempAppointment.getDate().toString() +
                     " " + tempAppointment.getTimeslot() + " " +
                     tempAppointment.getPatient().toString() + " does not exist.");
             return;
         }
         Timeslot timeslot = checkTimeslot(Integer.parseInt(newTimeslotString));
         if(timeslot == null) {
-            System.out.println(newTimeslotString + " is not a valid time slot.");
             return;
         }
         Date newDate = isDateValid(appDateString);
@@ -939,30 +981,28 @@ public class ClinicManagerController {
         tempAppointment.setProvider(provider);
         if(provider == null) return;
         Appointment newAppointment = new Appointment(newDate, timeslot, tempAppointment.getPatient(), provider);
-        if(appointmentList.contains(newAppointment)) {
-            System.out.println(newAppointment.getPatient() + " has an existing appointment at "
-                    + newDate.toString() + " " + timeslot.toString());
+        if(fortifiedContains(newAppointment)) {
+            ta_output.appendText("\n");
+            ta_output.appendText(newAppointment.getPatient() + " has an existing appointment at the same time slot.");
             return;
         }
         if(!isProviderAvailable(newAppointment)) {
-            System.out.println(provider.toString() + " is not available at slot " + newTimeslotString);
+            ta_output.appendText("\n");
+            ta_output.appendText(provider.toString() + " is not available at slot " + newTimeslotString);
             return;
         }
         appointmentList.remove(tempAppointment);
         appointmentList.add(newAppointment);
-        System.out.println("Rescheduled to " + newAppointment.toString());
+        ta_output.appendText("\nRescheduled to " + newAppointment.toString());
     }
 
     private void handleCancel(String firstName, String lastName, String dobString, String appDateString, String timeSlotString) {
-//        if(tokens.length != 6) {
-//            System.out.println("Missing data tokens.");
-//            return;
-//        }
         Appointment appointment = processLine(firstName, lastName, dobString, appDateString, timeSlotString);
 
         if(appointment == null) return;
         if(superContains(appointment, appDateString, timeSlotString, firstName, lastName, dobString) == 0) {
-            System.out.println(appDateString + " " + timeSlotString + " " + firstName + " " + lastName + " " + dobString + " - appointment does not exist.");
+            ta_output.appendText("\n");
+            ta_output.appendText(appDateString + " " + timeSlotString + " " + firstName + " " + lastName + " " + dobString + " - appointment does not exist.");
         }
     }
 }

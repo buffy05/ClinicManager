@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2a01ae0f-e5ff-4fb9-8176-1c621d89020f" name="Changes" comment="yuh">
+    <list default="true" id="2a01ae0f-e5ff-4fb9-8176-1c621d89020f" name="Changes" comment="updated 10/27, sorts and small stuff left">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/clinic/project3/ClinicManagerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/clinic/project3/ClinicManagerController.java" afterDir="false" />
     </list>
@@ -172,13 +172,22 @@
       <option name="project" value="LOCAL" />
       <updated>1730066072098</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="updated 10/27, sorts and small stuff left">
+      <option name="closed" value="true" />
+      <created>1730074101019</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1730074101019</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="yuh" />
     <MESSAGE value="10/23: GUI design in progress" />
     <MESSAGE value="10/24" />
-    <option name="LAST_COMMIT_MESSAGE" value="10/24" />
+    <MESSAGE value="updated 10/27, sorts and small stuff left" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated 10/27, sorts and small stuff left" />
   </component>
 </project>
