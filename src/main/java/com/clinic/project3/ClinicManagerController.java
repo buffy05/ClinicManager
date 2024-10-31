@@ -366,7 +366,7 @@ public class ClinicManagerController {
             ta_output.appendText("\nAppointment Date: " + date.toString() + " is not a valid calendar date.");
             return null;
         }
-        if(date.isToday() || date.isBeforeToday()) {//
+        if(date.isToday() || date.isBeforeToday()) {
             ta_output.appendText("\nAppointment Date: " + date.toString() + " is today or a date before today.");
             return null;
         }
@@ -395,7 +395,7 @@ public class ClinicManagerController {
             ta_output.appendText("\nPatient dob: " + dateDOB.toString() + " is not a valid calendar date.");
             return null;
         }
-        if(dateDOB.isToday() || !dateDOB.isBeforeToday()) {//fix this
+        if(dateDOB.isToday() || !dateDOB.isBeforeToday()) {
             ta_output.appendText("\nPatient dob: " + dateDOB.toString() + " is today or a date after today.");
             return null;
         }
@@ -612,7 +612,6 @@ public class ClinicManagerController {
         cb_oldTimeslot.setItems(timeslotInfo);
     }
 
-    //above 40 lines but not really sure how to cut it down, its fine i guess
     /**
      * Loads providers data from a file and initializes the list of doctors and technicians.
      */
@@ -664,7 +663,6 @@ public class ClinicManagerController {
         }
     }
 
-    //just for testing, will remove
     /**
      * Prints the list of available providers to the output text area.
      */
@@ -942,7 +940,6 @@ public class ClinicManagerController {
         }
     }
 
-    //also over 40 lines, if fixable fix, but if not it's fine
     /**
      * Handles scheduling an appointment based on the UI input.
      *
