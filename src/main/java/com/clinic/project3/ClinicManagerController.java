@@ -16,18 +16,27 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Controller for the Clinic Manager user interface.
+ * This class handles the scheduling, rescheduling, and canceling of appointments,
+ * as well as displays providers, patients, and appointment details.
+ * The controller is also linked to the FXML view.
+ *
+ * @author Syona Bhandari
+ * @author Rhemie Patiak
+ */
 public class ClinicManagerController {
     // constants
     private static final int COMMAND = 0;
-    private int NEXTTECHINDEX = 0;
 
+    //n instance variables
+    private int NEXTTECHINDEX = 0;
     private boolean scheduleEmpty = true;
     private List<Appointment> appointmentList = new List<Appointment>();
     private List<Provider> providerList = new List<Provider>();
     private List<Technician> technicianList = new List<Technician>();
     private List<Patient> patientList = new List<Patient>();
     private List<Appointment> canceledAppointment = new List<Appointment>();
-
     private ObservableList<String> doctorInfo = FXCollections.observableArrayList();
     private ObservableList<String> timeslotInfo = FXCollections.observableArrayList();
     private ObservableList<String> serviceInfo = FXCollections.observableArrayList();
@@ -146,7 +155,6 @@ public class ClinicManagerController {
     @FXML
     private TextArea ta_PS;
 
-
     @FXML
     private TextField tf_cFirstName;
 
@@ -165,6 +173,10 @@ public class ClinicManagerController {
     @FXML
     private TextField tf_sLastName;
 
+    /**
+     * Initializes the controller. Loads providers, timeslots, and services for the clinic manager application.
+     * Called automatically by JavaFX.
+     */
     @FXML
     private void initialize() {
         loadProviders();
@@ -179,7 +191,12 @@ public class ClinicManagerController {
         tv_appointmentsTable.setItems(FXCollections.observableArrayList());
     }
 
-
+    /**
+     * Parses a date string in the format MM/DD/YYYY and returns the parts as an array.
+     *
+     * @param dateStr The date string.
+     * @return an array with month, day, and year as integers, or null if parsing fails.
+     */
     private int[] parseDate(String dateStr) {
         try {
             String[] parts = dateStr.split("/");
@@ -192,6 +209,12 @@ public class ClinicManagerController {
         }
     }
 
+    /**
+     * Retrieves the Radiology type based on the provided service string.
+     *
+     * @param service The service string.
+     * @return the corresponding Radiology enum, or null if found.
+     */
     private Radiology getRadiology(String service) {
         if(service.equalsIgnoreCase("XRAY")) return Radiology.XRAY;
         if(service.equalsIgnoreCase("ULTRASOUND")) return Radiology.ULTRASOUND;
@@ -200,6 +223,13 @@ public class ClinicManagerController {
 
     }
 
+    /**
+     * Checks if a technician is available for a given appointment time and date.
+     *
+     * @param technician The technician,
+     * @param appointment The appointment to check availability against.
+     * @return true if the technician is available, otherwise false.
+     */
     private boolean isTechnicianAvailable(Technician technician, Appointment appointment) {
         for (Appointment a : appointmentList) {
             if (a.getProvider() != null && a.getProvider().equals(technician)) {
@@ -211,6 +241,15 @@ public class ClinicManagerController {
         return true; //technician is available
     }
 
+    /**
+     * Checks if a specific room is available at a certain date, timeslot, and location.
+     *
+     * @param date The date of the appointment.
+     * @param timeslot The timeslot of the appointment.
+     * @param room The radiology room.
+     * @param location The location of the clinic.
+     * @return true if the room is available, otherwise false.
+     */
     private boolean isRoomAvailable(Date date, Timeslot timeslot, Radiology room, Location location) {
         for (Appointment appointment : appointmentList) {
             Provider provider = providedProvider(appointment);
@@ -229,6 +268,12 @@ public class ClinicManagerController {
         return true; // Room is available
     }
 
+    /**
+     * Checks if a provider is available for a given appointment time and date.
+     *
+     * @param appointment The appointment to check availability against.
+     * @return true if the provider is available, otherwise false.
+     */
     private boolean isProviderAvailable(Appointment appointment) {
         for(Appointment a : appointmentList) {
             if(a.getProvider() != null && a.getProvider().equals(appointment.getProvider())) {
@@ -239,6 +284,12 @@ public class ClinicManagerController {
         return true; //is available
     }
 
+    /**
+     * Searches for a technician based on the profile provided.
+     *
+     * @param profile The profile of the technician to search for.
+     * @return the Technician if found, otherwise null.
+     */
     private Technician searchTechnician(Profile profile) {
         for(Technician technician : technicianList) {
             if(technician.getProfile().equals(profile)) return technician;
@@ -246,6 +297,12 @@ public class ClinicManagerController {
         return null;
     }
 
+    /**
+     * Searches for a doctor based on the NPI provided.
+     *
+     * @param npi the National Provider Identifier of the doctor to search for.
+     * @return the Doctor if found, otherwise null.
+     */
     private Provider searchDoctor(String npi) {
         for(Provider provider : providerList) {
             if(provider instanceof Doctor) {
@@ -255,6 +312,9 @@ public class ClinicManagerController {
         return null;
     }
 
+    /**
+     * Reverses the order of technicians in the technicianList.
+     */
     private void reverseTechnicianList() {
         int left = 0;
         int right = technicianList.size() - 1;
@@ -269,6 +329,9 @@ public class ClinicManagerController {
         }
     }
 
+    /**
+     * Prints the list of technicians in rotation order to the output text area.
+     */
     private void printTechnicians() {
         reverseTechnicianList();
         ta_output.appendText("\nRotation list for the technicians.\n");
@@ -279,12 +342,21 @@ public class ClinicManagerController {
         ta_output.appendText("\n");
     }
 
+    /**
+     * Prints the list of scheduled appointments to the output text area.
+     */
     private void printAppointmentList() {
         for(Appointment appointment : appointmentList) {
             ta_output.appendText(appointment.toString());
         }
     }
 
+    /**
+     * Validates the appointment date string and checks if it meets specific conditions.
+     *
+     * @param appDateString The appointment date as a string in the format MM/DD/YYYY.
+     * @return a valid Date object if the date is correct, otherwise null.
+     */
     private Date isDateValid(String appDateString) {
         //extract date
         String[] mmddyyyy = appDateString.split("/");
@@ -294,7 +366,7 @@ public class ClinicManagerController {
             ta_output.appendText("\nAppointment Date: " + date.toString() + " is not a valid calendar date.");
             return null;
         }
-        if(date.isToday() || date.isBeforeToday()) {//
+        if(date.isToday() || date.isBeforeToday()) {
             ta_output.appendText("\nAppointment Date: " + date.toString() + " is today or a date before today.");
             return null;
         }
@@ -309,6 +381,12 @@ public class ClinicManagerController {
         return date;
     }
 
+    /**
+     * Validates the date of birth string and checks if it meets specific conditions.
+     *
+     * @param dobString The date of birth as a string in the format MM/DD/YYYY.
+     * @return a valid Date object if the date is correct, otherwise null.
+     */
     private Date isDOBValid(String dobString) {
         //extract dob
         String[] mmddyyyyDOB = dobString.split("/");
@@ -317,13 +395,21 @@ public class ClinicManagerController {
             ta_output.appendText("\nPatient dob: " + dateDOB.toString() + " is not a valid calendar date.");
             return null;
         }
-        if(dateDOB.isToday() || !dateDOB.isBeforeToday()) {//fix this
+        if(dateDOB.isToday() || !dateDOB.isBeforeToday()) {
             ta_output.appendText("\nPatient dob: " + dateDOB.toString() + " is today or a date after today.");
             return null;
         }
         return dateDOB;
     }
 
+    /**
+     * Finds an available technician and assigns it to the imaging appointment.
+     *
+     * @param date The date of the appointment.
+     * @param timeslot The timeslot of the appointment.
+     * @param room The radiology room.
+     * @param imagingAppointment The imaging appointment to assign the technician to.
+     */
     private void findAvailableTechnician(Date date, Timeslot timeslot, Radiology room, Imaging imagingAppointment) {
         int startingIndex = NEXTTECHINDEX;
         boolean foundAvailable = false;
@@ -358,6 +444,12 @@ public class ClinicManagerController {
         }
     }
 
+    /**
+     * Finds the provider associated with an appointment.
+     *
+     * @param appointment The appointment for which to find the provider.
+     * @return the associated Provider if found, otherwise null.
+     */
     private Provider providedProvider(Appointment appointment) {
         for(Provider provider : providerList) {
             if(appointment.getProvider().getProfile().equals(provider.getProfile())) {
@@ -367,6 +459,17 @@ public class ClinicManagerController {
         return null;
     }
 
+    /**
+     * Checks if the appointment exists in the list and removes it if found.
+     *
+     * @param appointment The appointment to search for.
+     * @param appDateString The appointment date string.
+     * @param timeSlotString The appointment timeslot string.
+     * @param firstName The first name of the patient.
+     * @param lastName The last name of the patient.
+     * @param dobString The date of birth string of the patient.
+     * @return 1 if the appointment was found and removed, otherwise 9.
+     */
     private int superContains(Appointment appointment, String appDateString, String timeSlotString, String firstName, String lastName, String dobString) {
         for(Appointment a : appointmentList) {
             if(appointment.equals(a) && appointment.getPatient().getProfile().equals(a.getPatient().getProfile())) {
@@ -384,11 +487,23 @@ public class ClinicManagerController {
         return 0;
     }
 
+    /**
+     * Finds a provider associated with a specific appointment.
+     *
+     * @param appointment The appointment for which to find the provider.
+     * @return the Provider associated with the appointment if found, otherwise null.
+     */
     private Person findProvider(Appointment appointment) {
         int index = appointmentList.indexOf(appointment);
         return appointmentList.get(index).getProvider();
     }
 
+    /**
+     * Searches for an existing patient in the list by profile or creates a new one.
+     *
+     * @param profile The profile of the patient to find or create.
+     * @return the existing or newly created Patient.
+     */
     private Patient findOrCreatePatient(Profile profile) {
         for(Patient patient : patientList) {
             if(patient.getProfile().equals(profile)) {
@@ -401,6 +516,12 @@ public class ClinicManagerController {
         return patientTBA;
     }
 
+    /**
+     * Calculates the total charges accumulated by a patient.
+     *
+     * @param patient The patient whose charges to calculate.
+     * @return the total charges for the patient.
+     */
     private int getTotalCharges(Patient patient) {
         int total = 0;
         Visit currentVisit = patient.getVisitHistory();
@@ -417,6 +538,12 @@ public class ClinicManagerController {
         return total;
     }
 
+    /**
+     * Checks if an appointment has been canceled.
+     *
+     * @param appointment The appointment to check.
+     * @return true if the appointment is canceled, otherwise false.
+     */
     private boolean isAppointmentCanceled(Appointment appointment) {
         for(Appointment canceledAppt : canceledAppointment) {
             if(canceledAppt.equals(appointment)) return true;
@@ -424,6 +551,12 @@ public class ClinicManagerController {
         return false;
     }
 
+    /**
+     * Retrieves a Timeslot object based on the given slot number.
+     *
+     * @param slotNum The number of the desired timeslot (1 to 12).
+     * @return the corresponding Timeslot if valid, otherwise null.
+     */
     private Timeslot checkTimeslot(int slotNum) {
         try {
             //int slotNum = Integer.parseInt(slotNumString);
@@ -465,6 +598,9 @@ public class ClinicManagerController {
         }
     }
 
+    /**
+     * Loads timeslots into ChoiceBoxes for selection in the UI.
+     */
     private void loadTimeslots() {
         for(int i = 1; i < 13; i++) {
             Timeslot newTimeslot = checkTimeslot(i);
@@ -477,7 +613,9 @@ public class ClinicManagerController {
         cb_oldTimeslot.setItems(timeslotInfo);
     }
 
-    //above 40 lines but not really sure how to cut it down, its fine i guess
+    /**
+     * Loads providers data from a file and initializes the list of doctors and technicians.
+     */
     private void loadProviders() {
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream("providers.txt");
         if(inputStream == null) {
@@ -526,7 +664,9 @@ public class ClinicManagerController {
         }
     }
 
-    //just for testing, will remove
+    /**
+     * Prints the list of available providers to the output text area.
+     */
     private void printProviders() {
         ta_output.appendText("Providers available: \n");
         for(Provider provider : providerList) {
@@ -534,7 +674,278 @@ public class ClinicManagerController {
         }
     }
 
-    //also over 40 lines, if fixable fix, but if not it's fine
+    /**
+     * Converts the list of appointments to an ObservableList based on the filter key.
+     *
+     * @param key The filter key indicating the type of appointments to include.
+     * @return the ObservableList of filtered appointments.
+     */
+    private ObservableList<Appointment> convertToObservableList(String key) {
+        ObservableList<Appointment> observableList = FXCollections.observableArrayList();
+        switch(key) {
+            case "all":
+                for(Appointment appointment : appointmentList) {
+                    observableList.add(appointment);
+                }
+                break;
+            case "office":
+                for(Appointment appointment: appointmentList) {
+                    if(appointment instanceof Imaging) continue;
+                    else observableList.add(appointment);
+                }
+                break;
+            case "imaging":
+                for(Appointment appointment: appointmentList) {
+                    if(appointment instanceof Imaging) observableList.add(appointment);
+                }
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid sort key");
+        }
+        return observableList;
+    }
+
+    /**
+     * Clears all input fields and UI elements after a successful scheduling.
+     */
+    private void clearBoxesAfterSchedulingSuccesfull() {
+        tf_sFirstName.clear();
+        tf_rFirstName.clear();
+        tf_cFirstName.clear();
+        tf_sLastName.clear();
+        tf_rLastName.clear();
+        tf_cLastName.clear();
+        cb_sProviders.getSelectionModel().clearSelection();
+        cb_sServices.getSelectionModel().clearSelection();
+        cb_sTimeslot.getSelectionModel().clearSelection();
+        cb_newTimeslot.getSelectionModel().clearSelection();
+        cb_oldTimeslot.getSelectionModel().clearSelection();
+        cb_cTimeslot.getSelectionModel().clearSelection();
+        dp_sDOB.setValue(null);
+        dp_sDate.setValue(null);
+        dp_rDOB.setValue(null);
+        dp_rDate.setValue(null);
+        dp_cDOB.setValue(null);
+        dp_cDate.setValue(null);
+        appType.selectToggle(null);
+    }
+
+    /**
+     * Processes input data to create an appointment based on the provided information.
+     *
+     * @param firstName The first name of the patient.
+     * @param lastName The last name of the patient.
+     * @param dobString The date of birth of the patient as a string.
+     * @param appDateString The date of the appointment as a string.
+     * @param timeSlotString The timeslot of the appointment.
+     * @return Appointment object if created successfully, otherwise null.
+     */
+    private Appointment processLine(String firstName, String lastName, String dobString, String appDateString, String timeSlotString) {
+        Date date = isDateValid(appDateString);
+        if(date == null) return null;
+
+        int timeSlotNum = Integer.parseInt(timeSlotString);
+        Timeslot timeslot = checkTimeslot(timeSlotNum);
+        if(timeslot == null) {
+            return null;
+        }
+
+        Date dob = isDOBValid(dobString);
+        if(dob == null) return null;
+
+        Person patient = new Person(new Profile(firstName, lastName, dob));
+
+        return new Appointment(date, timeslot, patient, null);
+    }
+
+    /**
+     * Schedules an office appointment with a specified doctor.
+     *
+     * @param firstName The first name of the patient.
+     * @param lastName The last name of the patient.
+     * @param dobString The date of birth of the patient.
+     * @param appDateString The date of the appointment.
+     * @param timeSlotString The appointment timeslot.
+     * @param npi The NPI of the doctor.
+     */
+    private void handleD(String firstName, String lastName, String dobString, String appDateString, String timeSlotString, String npi) {
+        Appointment appointment = processLine(firstName, lastName, dobString, appDateString, timeSlotString);
+        if(appointment == null) return;
+        //String npi = tokens[6];
+        Doctor doctor = (Doctor) searchDoctor(npi);
+        if(doctor == null) {
+            return;
+        }
+        appointment.setProvider(doctor);
+        Patient patient = findOrCreatePatient(appointment.getPatient().getProfile());
+        Visit newVist = new Visit(appointment);
+        if(appointmentList.isEmpty()) {
+            appointmentList.add(appointment);
+            ta_output.appendText("\n");
+            ta_output.appendText(appointment.toString() + " booked.");
+            doctor.addCharges(doctor.rate());
+            patient.addVisit(newVist);
+            scheduleEmpty = false;
+            return;
+        }
+        if(isProviderAvailable(appointment) && !fortifiedContains(appointment)) {
+            appointmentList.add(appointment);
+            ta_output.appendText("\n");
+            ta_output.appendText(appointment.toString() + " booked.");
+            doctor.addCharges(doctor.rate());
+            patient.addVisit(newVist);
+            scheduleEmpty = false;
+        }
+        else {
+            if(fortifiedContains(appointment)) {
+                ta_output.appendText("\n");
+                ta_output.appendText(appointment.getPatient().toString() + " has an existing appointment at the same time slot.");
+                return;
+            }
+            if(!isProviderAvailable(appointment)) {
+                ta_output.appendText("\n");
+                ta_output.appendText(appointment.getProvider().toString() + " is not available at slot " + timeSlotString);
+            }
+        }
+    }
+
+    /**
+     * Checks if an appointment already exists in the appointment list with the same patient,
+     * timeslot, and date.
+     *
+     * @param appointment The appointment to check.
+     * @return true if the appointment exists, otherwise false.
+     */
+    private boolean fortifiedContains(Appointment appointment) {
+        if(appointmentList.contains(appointment)) return true;
+        else {
+            for(Appointment a : appointmentList) {
+                if(appointment.getPatient().getProfile().equals(a.getPatient().getProfile()) &&
+                    appointment.getTimeslot().equals(a.getTimeslot()) &&
+                        appointment.getDate().equals(a.getDate())) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+
+    /**
+     * Schedules an imaging appointment by assigning an available technician and room.
+     *
+     * @param firstName The first name of the patient.
+     * @param lastName The last name of the patient.
+     * @param dobString The date of birth of the patient.
+     * @param appDateString The date of the appointment.
+     * @param timeSlotString The appointment timeslot.
+     * @param service The radiology service type.
+     */
+    private void handleT(String firstName, String lastName, String dobString, String appDateString, String timeSlotString, String service) {
+        Appointment appointment = processLine(firstName, lastName, dobString, appDateString, timeSlotString);
+        if(appointment == null) return;
+        if(fortifiedContains(appointment)) {
+            ta_output.appendText("\n");
+            ta_output.appendText(appointment.getPatient().toString() + " has an existing appointment at the same time slot.");
+            return;
+        }
+        Radiology radiologyRoom = getRadiology(service);
+        if(radiologyRoom == null) {
+            return;
+        }
+        //proceed to assign a technician
+        Imaging imagingApp = new Imaging(appointment.getDate(), appointment.getTimeslot(),
+                appointment.getPatient(), appointment.getProvider(), radiologyRoom);
+
+        findAvailableTechnician(appointment.getDate(), appointment.getTimeslot(), radiologyRoom, imagingApp);
+        if(imagingApp.getRoom() == null) return;
+        if(imagingApp.getProvider() == null) {
+            ta_output.appendText("\n");
+            ta_output.appendText("Cannot find an available technician at all locations for " + radiologyRoom + " at slot " + timeSlotString);
+            return;
+        }
+        Visit newVisit = new Visit(imagingApp);
+        Patient patient = findOrCreatePatient(imagingApp.getPatient().getProfile());
+        Technician technician = (Technician) searchTechnician(imagingApp.getProvider().getProfile());
+        appointmentList.add(imagingApp);
+        ta_output.appendText("\n");
+        ta_output.appendText(imagingApp.toString() + " booked.");
+        //money stuff
+        assert technician != null;
+        technician.addCharges(technician.rate());
+        patient.addVisit(newVisit);
+        scheduleEmpty = false;
+    }
+
+    /**
+     * Reschedules an office appointment for a patient with a specified provider.
+     *
+     * @param firstName The first name of the patient.
+     * @param lastName The last name of the patient.
+     * @param dobString The date of birth of the patient.
+     * @param oldTimeslotString The old timeslot of the appointment.
+     * @param newTimeslotString The new timeslot for the appointment.
+     * @param appDateString The date of the appointment.
+     */
+    private void handleReschedule(String firstName, String lastName, String dobString, String oldTimeslotString, String newTimeslotString, String appDateString) {
+        //only for office appointments, imaging appointments can't be rescheduled
+        Appointment tempAppointment = processLine(firstName, lastName, dobString, appDateString, oldTimeslotString);
+        if(tempAppointment == null) return;
+        if(!appointmentList.contains(tempAppointment)) {
+            ta_output.appendText("\n");
+            ta_output.appendText(tempAppointment.getDate().toString() +
+                    " " + tempAppointment.getTimeslot() + " " +
+                    tempAppointment.getPatient().toString() + " does not exist.");
+            return;
+        }
+        Timeslot timeslot = checkTimeslot(Integer.parseInt(newTimeslotString));
+        if(timeslot == null) {
+            return;
+        }
+        Date newDate = isDateValid(appDateString);
+        if(newDate == null) return;
+        Person provider = findProvider(tempAppointment);
+        tempAppointment.setProvider(provider);
+        if(provider == null) return;
+        Appointment newAppointment = new Appointment(newDate, timeslot, tempAppointment.getPatient(), provider);
+        if(fortifiedContains(newAppointment)) {
+            ta_output.appendText("\n");
+            ta_output.appendText(newAppointment.getPatient() + " has an existing appointment at the same time slot.");
+            return;
+        }
+        if(!isProviderAvailable(newAppointment)) {
+            ta_output.appendText("\n");
+            ta_output.appendText(provider.toString() + " is not available at slot " + newTimeslotString);
+            return;
+        }
+        appointmentList.remove(tempAppointment);
+        appointmentList.add(newAppointment);
+        ta_output.appendText("\nRescheduled to " + newAppointment.toString());
+    }
+
+    /**
+     * Cancels an existing appointment based on the provided information.
+     *
+     * @param firstName The first name of the patient.
+     * @param lastName The last name of the patient.
+     * @param dobString The date of birth of the patient.
+     * @param appDateString The date of the appointment.
+     * @param timeSlotString The appointment timeslot.
+     */
+    private void handleCancel(String firstName, String lastName, String dobString, String appDateString, String timeSlotString) {
+        Appointment appointment = processLine(firstName, lastName, dobString, appDateString, timeSlotString);
+
+        if(appointment == null) return;
+        if(superContains(appointment, appDateString, timeSlotString, firstName, lastName, dobString) == 0) {
+            ta_output.appendText("\n");
+            ta_output.appendText(appDateString + " " + timeSlotString + " " + firstName + " " + lastName + " " + dobString + " - appointment does not exist.");
+        }
+    }
+
+    /**
+     * Handles scheduling an appointment based on the UI input.
+     *
+     * @param event the ActionEvent triggered by the schedule button.
+     */
     @FXML
     void onScheduleButtonClicked(ActionEvent event) {
         String firstName = tf_sFirstName.getText().trim();
@@ -591,31 +1002,9 @@ public class ClinicManagerController {
         }
     }
 
-    private ObservableList<Appointment> convertToObservableList(String key) {
-        ObservableList<Appointment> observableList = FXCollections.observableArrayList();
-        switch(key) {
-            case "all":
-                for(Appointment appointment : appointmentList) {
-                    observableList.add(appointment);
-                }
-                break;
-            case "office":
-                for(Appointment appointment: appointmentList) {
-                    if(appointment instanceof Imaging) continue;
-                    else observableList.add(appointment);
-                }
-                break;
-            case "imaging":
-                for(Appointment appointment: appointmentList) {
-                    if(appointment instanceof Imaging) observableList.add(appointment);
-                }
-                break;
-            default:
-                throw new IllegalArgumentException("Invalid sort key");
-        }
-        return observableList;
-    }
-
+    /**
+     * Handles sorting and displaying appointments by Date-Time-Provider.
+     */
     @FXML
     void onDateTimeProviderButton() {
         if(appointmentList.isEmpty() || providerList.isEmpty() || scheduleEmpty) {
@@ -628,6 +1017,9 @@ public class ClinicManagerController {
         tv_appointmentsTable.setItems(convertToObservableList("all"));
     }
 
+    /**
+     * Handles sorting and displaying appointments by County-Date-Time.
+     */
     @FXML
     void onCountyDateTimeButton() {
         if(appointmentList.isEmpty() || providerList.isEmpty() || scheduleEmpty) {
@@ -639,6 +1031,9 @@ public class ClinicManagerController {
         tv_appointmentsTable.setItems(convertToObservableList("all"));
     }
 
+    /**
+     * Handles sorting and displaying appointments by Patient-Date-Time.
+     */
     @FXML
     void onPatientDateTimeButton() {
         if(appointmentList.isEmpty() || providerList.isEmpty() || scheduleEmpty) {
@@ -650,6 +1045,9 @@ public class ClinicManagerController {
         tv_appointmentsTable.setItems(convertToObservableList("all"));
     }
 
+    /**
+     * Handles sorting and displaying only office appointments.
+     */
     @FXML
     void onOfficeOnlyButton() {
         if(appointmentList.isEmpty() || providerList.isEmpty() || scheduleEmpty) {
@@ -662,6 +1060,9 @@ public class ClinicManagerController {
 
     }
 
+    /**
+     * Handles sorting and displaying only imaging appointments.
+     */
     @FXML
     void onImagingOnlyButton() {
         if(appointmentList.isEmpty() || providerList.isEmpty() || scheduleEmpty) {
@@ -673,6 +1074,9 @@ public class ClinicManagerController {
         tv_appointmentsTable.setItems(convertToObservableList("imaging"));
     }
 
+    /**
+     * Displays provider credit amounts in a sorted order.
+     */
     @FXML
     void onPCButtonClicked() {
         ta_PC.clear();
@@ -690,6 +1094,9 @@ public class ClinicManagerController {
         ta_PC.appendText("\n** end of list **\n");
     }
 
+    /**
+     * Displays billing statements ordered by patient.
+     */
     @FXML
     void onPSButtonClicked() {
         ta_PS.clear();
@@ -709,6 +1116,9 @@ public class ClinicManagerController {
         scheduleEmpty = true;
     }
 
+    /**
+     * Clears various UI elements and refreshes the screen.
+     */
     @FXML
     void refreshButton() {
         //clear table
@@ -718,6 +1128,11 @@ public class ClinicManagerController {
         ta_PS.clear();
     }
 
+    /**
+     * Handles rescheduling of an appointment based on user input.
+     *
+     * @param event the ActionEvent triggered by the reschedule button.
+     */
     @FXML
     void onRescheduleButtonClicked(ActionEvent event) {
         String firstName = tf_rFirstName.getText().trim();
@@ -757,6 +1172,11 @@ public class ClinicManagerController {
         clearBoxesAfterSchedulingSuccesfull();
     }
 
+    /**
+     * Handles cancellation of an appointment based on user input.
+     *
+     * @param event the ActionEvent triggered by the cancel button.
+     */
     @FXML
     void onCancelButtonClicked(ActionEvent event) {
         String firstName = tf_cFirstName.getText().trim();
@@ -790,180 +1210,4 @@ public class ClinicManagerController {
         clearBoxesAfterSchedulingSuccesfull();
     }
 
-    private void clearBoxesAfterSchedulingSuccesfull() {
-        tf_sFirstName.clear();
-        tf_rFirstName.clear();
-        tf_cFirstName.clear();
-        tf_sLastName.clear();
-        tf_rLastName.clear();
-        tf_cLastName.clear();
-        cb_sProviders.getSelectionModel().clearSelection();
-        cb_sServices.getSelectionModel().clearSelection();
-        cb_sTimeslot.getSelectionModel().clearSelection();
-        cb_newTimeslot.getSelectionModel().clearSelection();
-        cb_oldTimeslot.getSelectionModel().clearSelection();
-        cb_cTimeslot.getSelectionModel().clearSelection();
-        dp_sDOB.setValue(null);
-        dp_sDate.setValue(null);
-        dp_rDOB.setValue(null);
-        dp_rDate.setValue(null);
-        dp_cDOB.setValue(null);
-        dp_cDate.setValue(null);
-        appType.selectToggle(null);
-    }
-
-    private Appointment processLine(String firstName, String lastName, String dobString, String appDateString, String timeSlotString) {
-        Date date = isDateValid(appDateString);
-        if(date == null) return null;
-
-        int timeSlotNum = Integer.parseInt(timeSlotString);
-        Timeslot timeslot = checkTimeslot(timeSlotNum);
-        if(timeslot == null) {
-            return null;
-        }
-
-        Date dob = isDOBValid(dobString);
-        if(dob == null) return null;
-
-        Person patient = new Person(new Profile(firstName, lastName, dob));
-
-        return new Appointment(date, timeslot, patient, null);
-    }
-
-    private void handleD(String firstName, String lastName, String dobString, String appDateString, String timeSlotString, String npi) {
-        Appointment appointment = processLine(firstName, lastName, dobString, appDateString, timeSlotString);
-        if(appointment == null) return;
-        //String npi = tokens[6];
-        Doctor doctor = (Doctor) searchDoctor(npi);
-        if(doctor == null) {
-            return;
-        }
-        appointment.setProvider(doctor);
-        Patient patient = findOrCreatePatient(appointment.getPatient().getProfile());
-        Visit newVist = new Visit(appointment);
-        if(appointmentList.isEmpty()) {
-            appointmentList.add(appointment);
-            ta_output.appendText("\n");
-            ta_output.appendText(appointment.toString() + " booked.");
-            doctor.addCharges(doctor.rate());
-            patient.addVisit(newVist);
-            scheduleEmpty = false;
-            return;
-        }
-        if(isProviderAvailable(appointment) && !fortifiedContains(appointment)) {
-            appointmentList.add(appointment);
-            ta_output.appendText("\n");
-            ta_output.appendText(appointment.toString() + " booked.");
-            doctor.addCharges(doctor.rate());
-            patient.addVisit(newVist);
-            scheduleEmpty = false;
-        }
-        else {
-            if(fortifiedContains(appointment)) {
-                ta_output.appendText("\n");
-                ta_output.appendText(appointment.getPatient().toString() + " has an existing appointment at the same time slot.");
-                return;
-            }
-            if(!isProviderAvailable(appointment)) {
-                ta_output.appendText("\n");
-                ta_output.appendText(appointment.getProvider().toString() + " is not available at slot " + timeSlotString);
-            }
-        }
-    }
-
-    private boolean fortifiedContains(Appointment appointment) {
-        if(appointmentList.contains(appointment)) return true;
-        else {
-            for(Appointment a : appointmentList) {
-                if(appointment.getPatient().getProfile().equals(a.getPatient().getProfile()) &&
-                    appointment.getTimeslot().equals(a.getTimeslot()) &&
-                        appointment.getDate().equals(a.getDate())) {
-                    return true;
-                }
-            }
-            return false;
-        }
-    }
-
-    private void handleT(String firstName, String lastName, String dobString, String appDateString, String timeSlotString, String service) {
-        Appointment appointment = processLine(firstName, lastName, dobString, appDateString, timeSlotString);
-        if(appointment == null) return;
-        if(fortifiedContains(appointment)) {
-            ta_output.appendText("\n");
-            ta_output.appendText(appointment.getPatient().toString() + " has an existing appointment at the same time slot.");
-            return;
-        }
-        Radiology radiologyRoom = getRadiology(service);
-        if(radiologyRoom == null) {
-            return;
-        }
-        //proceed to assign a technician
-        Imaging imagingApp = new Imaging(appointment.getDate(), appointment.getTimeslot(),
-                appointment.getPatient(), appointment.getProvider(), radiologyRoom);
-
-        findAvailableTechnician(appointment.getDate(), appointment.getTimeslot(), radiologyRoom, imagingApp);
-        if(imagingApp.getRoom() == null) return;
-        if(imagingApp.getProvider() == null) {
-            ta_output.appendText("\n");
-            ta_output.appendText("Cannot find an available technician at all locations for " + radiologyRoom + " at slot " + timeSlotString);
-            return;
-        }
-        Visit newVisit = new Visit(imagingApp);
-        Patient patient = findOrCreatePatient(imagingApp.getPatient().getProfile());
-        Technician technician = (Technician) searchTechnician(imagingApp.getProvider().getProfile());
-        appointmentList.add(imagingApp);
-        ta_output.appendText("\n");
-        ta_output.appendText(imagingApp.toString() + " booked.");
-        //money stuff
-        assert technician != null;
-        technician.addCharges(technician.rate());
-        patient.addVisit(newVisit);
-        scheduleEmpty = false;
-    }
-
-    private void handleReschedule(String firstName, String lastName, String dobString, String oldTimeslotString, String newTimeslotString, String appDateString) {
-        //only for office appointments, imaging appointments can't be rescheduled
-        Appointment tempAppointment = processLine(firstName, lastName, dobString, appDateString, oldTimeslotString);
-        if(tempAppointment == null) return;
-        if(!appointmentList.contains(tempAppointment)) {
-            ta_output.appendText("\n");
-            ta_output.appendText(tempAppointment.getDate().toString() +
-                    " " + tempAppointment.getTimeslot() + " " +
-                    tempAppointment.getPatient().toString() + " does not exist.");
-            return;
-        }
-        Timeslot timeslot = checkTimeslot(Integer.parseInt(newTimeslotString));
-        if(timeslot == null) {
-            return;
-        }
-        Date newDate = isDateValid(appDateString);
-        if(newDate == null) return;
-        Person provider = findProvider(tempAppointment);
-        tempAppointment.setProvider(provider);
-        if(provider == null) return;
-        Appointment newAppointment = new Appointment(newDate, timeslot, tempAppointment.getPatient(), provider);
-        if(fortifiedContains(newAppointment)) {
-            ta_output.appendText("\n");
-            ta_output.appendText(newAppointment.getPatient() + " has an existing appointment at the same time slot.");
-            return;
-        }
-        if(!isProviderAvailable(newAppointment)) {
-            ta_output.appendText("\n");
-            ta_output.appendText(provider.toString() + " is not available at slot " + newTimeslotString);
-            return;
-        }
-        appointmentList.remove(tempAppointment);
-        appointmentList.add(newAppointment);
-        ta_output.appendText("\nRescheduled to " + newAppointment.toString());
-    }
-
-    private void handleCancel(String firstName, String lastName, String dobString, String appDateString, String timeSlotString) {
-        Appointment appointment = processLine(firstName, lastName, dobString, appDateString, timeSlotString);
-
-        if(appointment == null) return;
-        if(superContains(appointment, appDateString, timeSlotString, firstName, lastName, dobString) == 0) {
-            ta_output.appendText("\n");
-            ta_output.appendText(appDateString + " " + timeSlotString + " " + firstName + " " + lastName + " " + dobString + " - appointment does not exist.");
-        }
-    }
 }

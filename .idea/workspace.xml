@@ -4,7 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2a01ae0f-e5ff-4fb9-8176-1c621d89020f" name="Changes" comment="updated 10/28, test, check, and format left">
+    <list default="true" id="2a01ae0f-e5ff-4fb9-8176-1c621d89020f" name="Changes" comment="updated format + comments">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -24,12 +25,12 @@
     &quot;assignee&quot;: &quot;buffy05&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/buffy05/Project3.git&quot;,
-    &quot;accountId&quot;: &quot;2c2146c5-ed0f-47a7-b5f5-32fad2ef90d2&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/buffy05/Project3.git",
+    "accountId": "c0b3a1fa-640f-451a-bc99-4eede242a7fc"
   }
-}</component>
+}]]></component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
@@ -179,13 +180,13 @@
       <option name="project" value="LOCAL" />
       <updated>1730074101019</updated>
     </task>
-    <task id="LOCAL-00012" summary="updated 10/28, test, check, and format left">
+    <task id="LOCAL-00012" summary="updated format + comments">
       <option name="closed" value="true" />
-      <created>1730148529866</created>
+      <created>1730323588697</created>
       <option name="number" value="00012" />
       <option name="presentableId" value="LOCAL-00012" />
       <option name="project" value="LOCAL" />
-      <updated>1730148529866</updated>
+      <updated>1730323588697</updated>
     </task>
     <task id="LOCAL-00013" summary="updated 10/28, test, check, and format left">
       <option name="closed" value="true" />
@@ -203,7 +204,7 @@
     <MESSAGE value="10/23: GUI design in progress" />
     <MESSAGE value="10/24" />
     <MESSAGE value="updated 10/27, sorts and small stuff left" />
-    <MESSAGE value="updated 10/28, test, check, and format left" />
-    <option name="LAST_COMMIT_MESSAGE" value="updated 10/28, test, check, and format left" />
+    <MESSAGE value="updated format + comments" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated format + comments" />
   </component>
 </project>
