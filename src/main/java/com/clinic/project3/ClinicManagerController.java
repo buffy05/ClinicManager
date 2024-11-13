@@ -350,6 +350,7 @@ public class ClinicManagerController {
                 }
             }
             NEXTTECHINDEX = (NEXTTECHINDEX + 1) % technicianList.size();
+            //shalalalaa
 
         } while(NEXTTECHINDEX != startingIndex);
         if(!foundAvailable) {
