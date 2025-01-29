@@ -1,5 +1,6 @@
-🏥 Clinic Manager: 
-Overview: 
+🏥 Clinic Manager
+
+📌 Overview: 
 Clinic Manager is a JavaFX-based scheduling system designed for multi-location healthcare providers. It streamlines patient management, appointment scheduling, and provider coordination with an intuitive UI and robust backend logic.
 
 ✨ Features: 
